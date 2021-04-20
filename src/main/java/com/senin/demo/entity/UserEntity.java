@@ -1,12 +1,15 @@
 package com.senin.demo.entity;
 
 import com.senin.demo.dto.Role;
+import com.senin.demo.dto.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @Entity
@@ -15,7 +18,7 @@ import javax.persistence.*;
 @Builder
 
 @Table(name = "candidate")
-public class CandidateEntity {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", unique = true, nullable = false)
@@ -31,4 +34,10 @@ public class CandidateEntity {
     @Column(name = "role")
     private Role role;
 
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "status")
+    private Status status;
+    public Set<SimpleGrantedAuthority> getAuthorities(){
+        return Set.of(new SimpleGrantedAuthority(role.name()));
+    }
 }

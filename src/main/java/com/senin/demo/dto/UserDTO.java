@@ -10,7 +10,7 @@ import javax.persistence.NamedEntityGraph;
 @AllArgsConstructor
 @NamedEntityGraph
 @Builder
-public class CandidateDTO {
+public class UserDTO {
     private Long id;
 
     private String username;
