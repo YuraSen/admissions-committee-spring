@@ -1,6 +1,6 @@
 HELP.md
 target/
-.mvn/wrapper/maven-wrapper.jar
+/mvn
 **/src/main/**/target/
 **/src/test/**/target/
 
@@ -40,6 +40,8 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
+/mvnw
+/mvnw.cmd
 
 ### VS Code ###
 .vscode/
