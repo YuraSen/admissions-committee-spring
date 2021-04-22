@@ -37,7 +37,5 @@ public class UserEntity {
     @Enumerated(value = EnumType.STRING)
     @Column(name = "status")
     private Status status;
-    public Set<SimpleGrantedAuthority> getAuthorities(){
-        return Set.of(new SimpleGrantedAuthority(role.name()));
-    }
+
 }

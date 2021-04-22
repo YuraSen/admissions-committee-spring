@@ -20,16 +20,16 @@ public class UserSecurity implements UserDetails {
     private final boolean isActive;
     private  boolean isAdmin;
 
-    public static UserDetails getUserFromCandidate(UserEntity userEntity) {
-        return new org.springframework.security.core.userdetails.User(
-                userEntity.getUsername(),
-                userEntity.getPassword(),
-                userEntity.getStatus().equals(Status.ACTIVE),
-                userEntity.getStatus().equals(Status.ACTIVE),
-                userEntity.getStatus().equals(Status.ACTIVE),
-                userEntity.getStatus().equals(Status.ACTIVE),
-                userEntity.getAuthorities());
-    }
+//    public static UserDetails getUserFromCandidate(UserEntity userEntity) {
+//        return new org.springframework.security.core.userdetails.User(
+//                userEntity.getUsername(),
+//                userEntity.getPassword(),
+//                userEntity.getStatus().equals(Status.ACTIVE),
+//                userEntity.getStatus().equals(Status.ACTIVE),
+//                userEntity.getStatus().equals(Status.ACTIVE),
+//                userEntity.getStatus().equals(Status.ACTIVE),
+//                userEntity.getAuthorities());
+//    }
 
     @Override
     public boolean isAccountNonExpired() {
