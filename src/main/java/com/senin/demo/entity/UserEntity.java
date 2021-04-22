@@ -1,15 +1,14 @@
 package com.senin.demo.entity;
 
 import com.senin.demo.dto.Role;
-import com.senin.demo.dto.Status;
+import com.senin.demo.dto.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Entity
@@ -17,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 
-@Table(name = "candidate")
+@Table(name = "usr")
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,7 +34,14 @@ public class UserEntity {
     private Role role;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "status")
-    private Status status;
+    @Column(name = "user_status")
+    private UserStatus userStatus;
 
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            mappedBy = "usr")
+    private UserProfileEntity userProfileEntity;
+
+    @OneToMany(mappedBy = "usr", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<AdmissionRequestEntity> admissionRequestEntityList;
 }

@@ -35,4 +35,9 @@ public class UserProfileEntity {
 
     @Column(name = "certificate_file")
     private String certificateFile;
+
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "usr_id", nullable = false)
+    private UserEntity userEntity;
+
 }

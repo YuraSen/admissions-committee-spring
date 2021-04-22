@@ -1,11 +1,13 @@
 package com.senin.demo.entity;
 
+import com.senin.demo.dto.AdmissionRequestStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -40,4 +42,29 @@ public class FacultyEntity {
 
     @Column(name = "third_required_subject")
     private String thirdRequiredSubject;
+
+    @Column(name = "admission_open", nullable = false)
+    private boolean admissionOpen;
+
+    @OneToMany(mappedBy = "faculty", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<AdmissionRequestEntity> admissionRequestEntityList;
+
+
+    public Long numberOfNewRequests() {
+        return admissionRequestEntityList.stream()
+                .filter(ar -> ar.getAdmissionRequestStatus().ordinal() == AdmissionRequestStatus.NEW.ordinal())
+                .count();
+    }
+
+    public Long numberOfApprovedRequests() {
+        return admissionRequestEntityList.stream()
+                .filter(ar -> ar.getAdmissionRequestStatus().ordinal() == AdmissionRequestStatus.APPROVED.ordinal())
+                .count();
+    }
+
+    public Long numberOfRejectedRequests() {
+        return admissionRequestEntityList.stream()
+                .filter(ar -> ar.getAdmissionRequestStatus().ordinal() == AdmissionRequestStatus.REJECTED.ordinal())
+                .count();
+    }
 }
