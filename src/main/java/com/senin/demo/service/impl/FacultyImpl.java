@@ -52,8 +52,8 @@ public class FacultyImpl implements FacultyService {
 
     @Override
     @Transactional
-    public FacultyDTO update(FacultyDTO user) {
-        return mapFacultyEntityToDTO(entityManager.merge(mapFacultyDtoToEntity(user)));
+    public FacultyDTO update(FacultyDTO facultyDTO) {
+        return mapFacultyEntityToDTO(entityManager.merge(mapFacultyDtoToEntity(facultyDTO)));
     }
 
     @Override
