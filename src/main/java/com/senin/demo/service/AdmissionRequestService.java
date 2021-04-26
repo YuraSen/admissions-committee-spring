@@ -1,18 +1,18 @@
 package com.senin.demo.service;
 
 import com.senin.demo.dto.AdmissionRequestDTO;
-import com.senin.demo.dto.FacultyDTO;
-
-import java.util.List;
+import com.senin.demo.entity.AdmissionRequestEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface AdmissionRequestService {
-    AdmissionRequestDTO save(AdmissionRequestDTO admissionRequestDTO);
 
-    AdmissionRequestDTO findById(Long id);
+    AdmissionRequestDTO update(AdmissionRequestDTO admissionRequestDTO);
 
-    List<AdmissionRequestDTO> findAll();
+    Page<AdmissionRequestEntity> getAdmissionRequestsForFacultyById(Long id, Pageable pageable);
 
-    AdmissionRequestDTO update(AdmissionRequestDTO facultyDTO);
+    Page<AdmissionRequestEntity> getAdmissionRequestsForUserByUsername(String username, Pageable pageable);
 
-    void deleteById(Long id);
+    AdmissionRequestDTO saveAdmissionRequest(AdmissionRequestDTO admissionRequestDTO);
+
 }

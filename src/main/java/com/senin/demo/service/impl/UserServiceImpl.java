@@ -1,6 +1,7 @@
 package com.senin.demo.service.impl;
 
 import com.senin.demo.dto.UserDTO;
+import com.senin.demo.dto.UserProfileDTO;
 import com.senin.demo.entity.UserEntity;
 import com.senin.demo.exception.IncorrectIdRuntimeException;
 import com.senin.demo.exception.IncorrectUserNameException;
@@ -10,7 +11,10 @@ import com.senin.demo.util.UtilityService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,7 +24,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class UserImpl implements UserService {
+public class UserServiceImpl implements UserService {
     @PersistenceContext
     private final UserRepository userRepository;
     private final EntityManager entityManager;
@@ -35,11 +39,6 @@ public class UserImpl implements UserService {
     }
 
     @Override
-    public UserDTO save(UserDTO user) {
-        return mapUserEntityToDTO(userRepository.save(mapUserDtoToEntity(user)));
-    }
-
-    @Override
     public UserDTO findById(Long id) {
         UtilityService.isIdPositive(id);
         return mapUserEntityToDTO(userRepository.findById(id)
@@ -47,15 +46,13 @@ public class UserImpl implements UserService {
     }
 
     @Override
-    public UserDTO findByUserName(String username){
-        UtilityService.isNamePresent(username);
-        return mapUserEntityToDTO(userRepository.findByUsername(username)
-        .orElseThrow(() -> new IncorrectUserNameException(UtilityService.USERNAME_CORRECT)));
+    public Page<UserEntity> getAllCandidates(Pageable pageable) {
+        return null;
     }
 
     @Override
-    public List<UserDTO> findAll() {
-        return userRepository.findAll().stream().map(this::mapUserEntityToDTO).collect(Collectors.toList());
+    public UserDTO findByUsername(String userName) {
+        return null;
     }
 
     @Override
@@ -65,8 +62,28 @@ public class UserImpl implements UserService {
     }
 
     @Override
+    public UserEntity createUser(UserDTO userDTO, UserProfileDTO userProfileDTO) {
+        return null;
+    }
+
+    @Override
+    public void setUserRequestsStatus(UserDTO userDTO) {
+
+    }
+
+    @Override
     public void deleteById(Long id) {
         UtilityService.isIdPositive(id);
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public Integer updateUserProfile(UserProfileDTO userProfileDTO) {
+        return null;
+    }
+
+    @Override
+    public String saveFile(MultipartFile file, String uploadPath) {
+        return null;
     }
 }

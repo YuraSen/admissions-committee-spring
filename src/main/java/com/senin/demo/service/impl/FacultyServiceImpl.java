@@ -9,6 +9,8 @@ import com.senin.demo.util.UtilityService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -19,7 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class FacultyImpl implements FacultyService {
+public class FacultyServiceImpl implements FacultyService {
     @PersistenceContext
     private final FacultyRepository facultyRepository;
     private final EntityManager entityManager;
@@ -33,10 +35,6 @@ public class FacultyImpl implements FacultyService {
         return modelMapper.map(facultyDTO, FacultyEntity.class);
     }
 
-    @Override
-    public FacultyDTO save(FacultyDTO facultyDTO) {
-        return mapFacultyEntityToDTO(facultyRepository.save(mapFacultyDtoToEntity(facultyDTO)));
-    }
 
     @Override
     public FacultyDTO findById(Long id) {
@@ -46,19 +44,23 @@ public class FacultyImpl implements FacultyService {
     }
 
     @Override
-    public List<FacultyDTO> findAll() {
-        return facultyRepository.findAll().stream().map(this::mapFacultyEntityToDTO).collect(Collectors.toList());
-    }
-
-    @Override
-    @Transactional
-    public FacultyDTO update(FacultyDTO facultyDTO) {
-        return mapFacultyEntityToDTO(entityManager.merge(mapFacultyDtoToEntity(facultyDTO)));
+    public Page<FacultyEntity> getAllFaculties(Pageable pageable) {
+        return null;
     }
 
     @Override
     public void deleteById(Long id) {
         UtilityService.isIdPositive(id);
         facultyRepository.deleteById(id);
+    }
+
+    @Override
+    public void blockUnblockRegistration(FacultyDTO facultyDTO) {
+        facultyRepository.blockUnblockRegistration(facultyDTO.getId(), facultyDTO.isAdmissionOpen());
+    }
+
+    @Override
+    public FacultyEntity createFaculty(FacultyDTO facultyDTO) {
+        return null;
     }
 }
