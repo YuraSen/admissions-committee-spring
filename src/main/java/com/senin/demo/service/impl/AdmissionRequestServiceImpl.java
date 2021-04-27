@@ -1,9 +1,7 @@
 package com.senin.demo.service.impl;
 
 import com.senin.demo.dto.AdmissionRequestDTO;
-import com.senin.demo.dto.UserDTO;
 import com.senin.demo.entity.AdmissionRequestEntity;
-import com.senin.demo.entity.UserEntity;
 import com.senin.demo.exception.RequestAlreadyExistsException;
 import com.senin.demo.repository.AdmissionRequestRepository;
 import com.senin.demo.service.AdmissionRequestService;
@@ -25,35 +23,27 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class AdmissionRequestServiceImpl implements AdmissionRequestService, AdmissionRequestMapper {
+public class AdmissionRequestServiceImpl implements AdmissionRequestService {
     @PersistenceContext
     private final AdmissionRequestRepository admissionRequestRepository;
     private final EntityManager entityManager;
-    private final ModelMapper modelMapper;
+    private final AdmissionRequestMapper admissionRequestMapper;
 
-    public AdmissionRequestDTO mapAdmissionRequestEntityToDTO(AdmissionRequestEntity admissionRequestEntity) {
-        return modelMapper
-                .map(admissionRequestEntity, AdmissionRequestDTO.class);
-    }
 
-    public AdmissionRequestEntity mapAdmissionRequestDtoToEntity(AdmissionRequestDTO admissionRequestDTO) {
-        return modelMapper
-                .map(admissionRequestDTO, AdmissionRequestEntity.class);
-    }
 
 
     @Override
     @Transactional
     public AdmissionRequestDTO update(AdmissionRequestDTO admissionRequestDTO) {
-        return mapAdmissionRequestEntityToDTO(entityManager
-                .merge(mapAdmissionRequestDtoToEntity(admissionRequestDTO)));
+        return admissionRequestMapper.mapAdmissionRequestEntityToDTO(entityManager
+                .merge(admissionRequestMapper.mapAdmissionRequestDTOtoEntity(admissionRequestDTO)));
     }
 
     @Override
     public Page<AdmissionRequestDTO> getAdmissionRequestsForFacultyById(Long id, Pageable pageable) {
         Page<AdmissionRequestEntity> allByFacultyEntity_id = admissionRequestRepository.findAllByFacultyEntity_Id(id, pageable);
         List<AdmissionRequestDTO> collect = allByFacultyEntity_id.stream()
-                .map(this::mapAdmissionRequestEntityToDTO)
+                .map(admissionRequestMapper::mapAdmissionRequestEntityToDTO)
                 .collect(Collectors.toList());
         return new PageImpl<>(collect, pageable, countAllAdmission());
     }
@@ -62,7 +52,7 @@ public class AdmissionRequestServiceImpl implements AdmissionRequestService, Adm
     public Page<AdmissionRequestDTO> getAdmissionRequestsForUserByUsername(String username, Pageable pageable) {
         Page<AdmissionRequestEntity> allByUserEntity_username = admissionRequestRepository.findAllByUserEntity_Username(username, pageable);
         List<AdmissionRequestDTO> collect = allByUserEntity_username.stream()
-                .map(this::mapAdmissionRequestEntityToDTO)
+                .map(admissionRequestMapper::mapAdmissionRequestEntityToDTO)
                 .collect(Collectors.toList());
         return new PageImpl<>(collect, pageable, countAllAdmission());
     }
@@ -74,39 +64,10 @@ public class AdmissionRequestServiceImpl implements AdmissionRequestService, Adm
     @Override
     public AdmissionRequestDTO saveAdmissionRequest(AdmissionRequestDTO admissionRequestDTO) {
         try {
-            return mapAdmissionRequestEntityToDTO(admissionRequestRepository.save(mapAdmissionRequestDtoToEntity(admissionRequestDTO)));
+            return admissionRequestMapper.mapAdmissionRequestEntityToDTO(admissionRequestRepository.save(admissionRequestMapper.mapAdmissionRequestDTOtoEntity(admissionRequestDTO)));
         } catch (DataIntegrityViolationException ex) {
             throw new RequestAlreadyExistsException("Request Already Exists!");
         }
     }
 
-    @Override
-    public AdmissionRequestDTO AdmissionRequestEntityToDTO(AdmissionRequestEntity admissionRequestEntity) {
-        if (admissionRequestEntity == null) {
-            return null;
-        }
-        AdmissionRequestDTO admissionRequestDTO = new AdmissionRequestDTO();
-        admissionRequestDTO.setId(admissionRequestEntity.getId());
-        admissionRequestDTO.setUserEntity(admissionRequestEntity.getUserEntity());
-        admissionRequestDTO.setFacultyEntity(admissionRequestEntity.getFacultyEntity());
-        admissionRequestDTO.setFirstRequiredSubjectMark(admissionRequestEntity.getFirstRequiredSubjectMark());
-        admissionRequestDTO.setSecondRequiredSubjectMark(admissionRequestEntity.getSecondRequiredSubjectMark());
-        admissionRequestDTO.setThirdRequiredSubjectMark(admissionRequestEntity.getThirdRequiredSubjectMark());
-        return admissionRequestDTO;
-    }
-
-    @Override
-    public AdmissionRequestEntity AdmissionRequestDTOtoEntity(AdmissionRequestDTO admissionRequestDTO) {
-        if (admissionRequestDTO == null) {
-            return null;
-        }
-        AdmissionRequestEntity admissionRequestEntity = new AdmissionRequestEntity();
-        admissionRequestEntity.setId(admissionRequestDTO.getId());
-        admissionRequestEntity.setUserEntity(admissionRequestDTO.getUserEntity());
-        admissionRequestEntity.setFacultyEntity(admissionRequestDTO.getFacultyEntity());
-        admissionRequestEntity.setFirstRequiredSubjectMark(admissionRequestDTO.getFirstRequiredSubjectMark());
-        admissionRequestEntity.setSecondRequiredSubjectMark(admissionRequestDTO.getSecondRequiredSubjectMark());
-        admissionRequestEntity.setThirdRequiredSubjectMark(admissionRequestDTO.getThirdRequiredSubjectMark());
-        return admissionRequestEntity;
-    }
 }

@@ -4,18 +4,17 @@ import com.senin.demo.entity.AdmissionRequestEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.NamedEntityGraph;
 import javax.validation.constraints.AssertTrue;
 import java.util.List;
-import java.util.Objects;
 
 import static java.util.Objects.nonNull;
 
 
 @Data
 @AllArgsConstructor
-@NamedEntityGraph
+@NoArgsConstructor
 @Builder
 public class FacultyDTO {
     private Long id;

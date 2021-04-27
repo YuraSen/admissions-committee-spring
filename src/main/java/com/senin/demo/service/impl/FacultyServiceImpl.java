@@ -5,16 +5,15 @@ import com.senin.demo.entity.FacultyEntity;
 import com.senin.demo.exception.IncorrectIdRuntimeException;
 import com.senin.demo.repository.FacultyRepository;
 import com.senin.demo.service.FacultyService;
+import com.senin.demo.service.mapper.FacultyMapper;
 import com.senin.demo.util.UtilityService;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,22 +23,12 @@ import java.util.stream.Collectors;
 public class FacultyServiceImpl implements FacultyService {
     @PersistenceContext
     private final FacultyRepository facultyRepository;
-    private final EntityManager entityManager;
-    private final ModelMapper modelMapper;
-
-    public FacultyDTO mapFacultyEntityToDTO(FacultyEntity facultyEntity){
-        return modelMapper.map(facultyEntity, FacultyDTO.class);
-    }
-
-    public FacultyEntity mapFacultyDtoToEntity(FacultyDTO facultyDTO){
-        return modelMapper.map(facultyDTO, FacultyEntity.class);
-    }
-
+    private final FacultyMapper facultyMapper;
 
     @Override
     public FacultyDTO findById(Long id) {
         UtilityService.isIdPositive(id);
-        return mapFacultyEntityToDTO(facultyRepository.findById(id)
+        return facultyMapper.mapFacultyEntityToDTO(facultyRepository.findById(id)
                 .orElseThrow(() -> new IncorrectIdRuntimeException(UtilityService.ID_CORRECT)));
     }
 
@@ -47,7 +36,7 @@ public class FacultyServiceImpl implements FacultyService {
     public Page<FacultyDTO> getAllFaculties(Pageable pageable) {
         Page<FacultyEntity> repositoryAll = facultyRepository.findAll(pageable);
         List<FacultyDTO> collect = repositoryAll.stream()
-                .map(this::mapFacultyEntityToDTO)
+                .map(facultyMapper::mapFacultyEntityToDTO)
                 .collect(Collectors.toList());
         return new PageImpl<>(collect, pageable, countAllFaculty());
     }
@@ -69,6 +58,7 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public FacultyDTO createFaculty(FacultyDTO facultyDTO) {
-        return mapFacultyEntityToDTO(facultyRepository.save(mapFacultyDtoToEntity(facultyDTO)));
+        return facultyMapper.mapFacultyEntityToDTO(facultyRepository.save(facultyMapper.mapFacultyDTOToEntity(facultyDTO)));
     }
+
 }

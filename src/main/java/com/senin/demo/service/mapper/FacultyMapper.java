@@ -7,9 +7,7 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface FacultyMapper {
-    FacultyMapper INSTANCE_FACULTY = Mappers.getMapper(FacultyMapper.class);
+    FacultyDTO mapFacultyEntityToDTO(FacultyEntity facultyEntity);
 
-    FacultyDTO facultyEntityToDTO(FacultyEntity facultyEntity);
-
-    FacultyEntity facultyDTOToEntity(FacultyDTO facultyDTO);
+    FacultyEntity mapFacultyDTOToEntity(FacultyDTO facultyDTO);
 }

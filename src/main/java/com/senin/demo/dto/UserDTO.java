@@ -3,12 +3,11 @@ package com.senin.demo.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
-import javax.persistence.NamedEntityGraph;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NamedEntityGraph
+@NoArgsConstructor
 @Builder
 public class UserDTO {
     private Long id;

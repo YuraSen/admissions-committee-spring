@@ -21,13 +21,11 @@ public interface UserService {
 
     UserDTO update(UserDTO user);
 
-    UserEntity createUser(UserDTO userDTO, UserProfileDTO userProfileDTO);
+    UserEntity createUser(UserDTO userDTO);
 
     void setUserRequestsStatus(UserDTO userDTO);
 
     void deleteById(Long id);
-
-    Integer updateUserProfile(UserProfileDTO userProfileDTO);
 
     String saveFile(MultipartFile file, String uploadPath);
 

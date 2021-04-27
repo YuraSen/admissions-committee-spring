@@ -9,9 +9,7 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface AdmissionRequestMapper {
-    AdmissionRequestMapper INSTANCE_ADMISSION_REQUEST = Mappers.getMapper(AdmissionRequestMapper.class);
+    AdmissionRequestDTO mapAdmissionRequestEntityToDTO(AdmissionRequestEntity admissionRequestEntity);
 
-    AdmissionRequestDTO AdmissionRequestEntityToDTO(AdmissionRequestEntity admissionRequestEntity);
-
-    AdmissionRequestEntity AdmissionRequestDTOtoEntity(AdmissionRequestDTO admissionRequestDTO);
+    AdmissionRequestEntity mapAdmissionRequestDTOtoEntity(AdmissionRequestDTO admissionRequestDTO);
 }
