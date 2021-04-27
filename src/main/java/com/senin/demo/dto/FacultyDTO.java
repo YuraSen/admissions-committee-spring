@@ -8,6 +8,9 @@ import lombok.Data;
 import javax.persistence.NamedEntityGraph;
 import javax.validation.constraints.AssertTrue;
 import java.util.List;
+import java.util.Objects;
+
+import static java.util.Objects.nonNull;
 
 
 @Data
@@ -35,10 +38,7 @@ public class FacultyDTO {
 
     @AssertTrue(message = "budget capacity must be less or equals to total capacity")
     private boolean isValid() {
-        if (this.budgetCapacity != null && this.totalCapacity != null) {
-            return this.budgetCapacity <= this.totalCapacity;
-        }
-        return false;
+        return nonNull(budgetCapacity) && nonNull(totalCapacity) && budgetCapacity <= totalCapacity;
     }
 
     private List<AdmissionRequestEntity> admissionRequestEntities;

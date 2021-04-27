@@ -9,9 +9,9 @@ public interface AdmissionRequestService {
 
     AdmissionRequestDTO update(AdmissionRequestDTO admissionRequestDTO);
 
-    Page<AdmissionRequestEntity> getAdmissionRequestsForFacultyById(Long id, Pageable pageable);
+    Page<AdmissionRequestDTO> getAdmissionRequestsForFacultyById(Long id, Pageable pageable);
 
-    Page<AdmissionRequestEntity> getAdmissionRequestsForUserByUsername(String username, Pageable pageable);
+    Page<AdmissionRequestDTO> getAdmissionRequestsForUserByUsername(String username, Pageable pageable);
 
     AdmissionRequestDTO saveAdmissionRequest(AdmissionRequestDTO admissionRequestDTO);
 

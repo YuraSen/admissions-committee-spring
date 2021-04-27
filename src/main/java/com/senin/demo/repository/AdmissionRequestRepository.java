@@ -12,10 +12,10 @@ import org.springframework.data.repository.query.Param;
 import javax.transaction.Transactional;
 
 public interface AdmissionRequestRepository extends JpaRepository<AdmissionRequestEntity, Long> {
-    Page<AdmissionRequestEntity> findAllByUsername(String username, Pageable pageable);
 
-    Page<AdmissionRequestEntity> findAllByFacultyId(Long id, Pageable pageable);
+    Page<AdmissionRequestEntity> findAllByUserEntity_Username(String username, Pageable pageable);
 
+    Page<AdmissionRequestEntity> findAllByFacultyEntity_Id(Long id, Pageable pageable);
 
     @Transactional
     @Modifying

@@ -13,9 +13,13 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AdmissionRequestDTO {
     private Long id;
+
     private Long candidateId;
+
     private Long facultyId;
+
     private UserEntity userEntity;
+
     private FacultyEntity facultyEntity;
 
     private Integer firstRequiredSubjectMark;

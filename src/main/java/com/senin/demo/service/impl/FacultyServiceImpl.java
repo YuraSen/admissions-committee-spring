@@ -10,12 +10,12 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,8 +44,16 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public Page<FacultyEntity> getAllFaculties(Pageable pageable) {
-        return null;
+    public Page<FacultyDTO> getAllFaculties(Pageable pageable) {
+        Page<FacultyEntity> repositoryAll = facultyRepository.findAll(pageable);
+        List<FacultyDTO> collect = repositoryAll.stream()
+                .map(this::mapFacultyEntityToDTO)
+                .collect(Collectors.toList());
+        return new PageImpl<>(collect, pageable, countAllFaculty());
+    }
+
+    private Long countAllFaculty() {
+        return facultyRepository.count();
     }
 
     @Override
@@ -60,7 +68,7 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public FacultyEntity createFaculty(FacultyDTO facultyDTO) {
-        return null;
+    public FacultyDTO createFaculty(FacultyDTO facultyDTO) {
+        return mapFacultyEntityToDTO(facultyRepository.save(mapFacultyDtoToEntity(facultyDTO)));
     }
 }

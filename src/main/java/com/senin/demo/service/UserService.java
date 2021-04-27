@@ -1,5 +1,6 @@
 package com.senin.demo.service;
 
+import com.senin.demo.dto.FacultyDTO;
 import com.senin.demo.dto.UserDTO;
 import com.senin.demo.dto.UserProfileDTO;
 import com.senin.demo.entity.UserEntity;
@@ -14,7 +15,7 @@ import java.util.List;
 public interface UserService {
     UserDTO findById(Long id);
 
-    Page<UserEntity> getAllCandidates(Pageable pageable);
+    Page<UserDTO> getAllCandidates(Pageable pageable);
 
     UserDTO findByUsername(String userName);
 

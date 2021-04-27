@@ -8,11 +8,11 @@ import org.springframework.data.domain.Pageable;
 public interface FacultyService {
     FacultyDTO findById(Long id);
 
-    Page<FacultyEntity> getAllFaculties(Pageable pageable);
+    Page<FacultyDTO> getAllFaculties(Pageable pageable);
 
     void deleteById(Long id);
 
     void blockUnblockRegistration(FacultyDTO facultyDTO);
 
-    FacultyEntity createFaculty(FacultyDTO facultyDTO);
+    FacultyDTO createFaculty(FacultyDTO facultyDTO);
 }
