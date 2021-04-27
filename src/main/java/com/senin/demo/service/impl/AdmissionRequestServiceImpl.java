@@ -1,11 +1,14 @@
 package com.senin.demo.service.impl;
 
 import com.senin.demo.dto.AdmissionRequestDTO;
+import com.senin.demo.dto.FacultyDTO;
 import com.senin.demo.entity.AdmissionRequestEntity;
+import com.senin.demo.exception.IncorrectIdRuntimeException;
 import com.senin.demo.exception.RequestAlreadyExistsException;
 import com.senin.demo.repository.AdmissionRequestRepository;
 import com.senin.demo.service.AdmissionRequestService;
 import com.senin.demo.service.mapper.AdmissionRequestMapper;
+import com.senin.demo.util.UtilityService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -33,6 +36,19 @@ public class AdmissionRequestServiceImpl implements AdmissionRequestService {
     public AdmissionRequestDTO update(AdmissionRequestDTO admissionRequestDTO) {
         return admissionRequestMapper.mapAdmissionRequestEntityToDTO(entityManager
                 .merge(admissionRequestMapper.mapAdmissionRequestDTOtoEntity(admissionRequestDTO)));
+    }
+
+    @Override
+    public AdmissionRequestDTO findById(Long id) {
+        UtilityService.isIdPositive(id);
+        return admissionRequestMapper.mapAdmissionRequestEntityToDTO(admissionRequestRepository.findById(id)
+                .orElseThrow(() -> new IncorrectIdRuntimeException(UtilityService.ID_CORRECT)));
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        UtilityService.isIdPositive(id);
+        admissionRequestRepository.deleteById(id);
     }
 
     @Override

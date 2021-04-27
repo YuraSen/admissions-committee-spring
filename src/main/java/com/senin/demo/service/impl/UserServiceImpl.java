@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserDTO> getAllCandidates(Pageable pageable) {
+    public Page<UserDTO> getAllUser(Pageable pageable) {
         Page<UserEntity> userRepositoryAll = userRepository.findAll(pageable);
         List<UserDTO> collect = userRepositoryAll.stream()
                 .map(userMapper::mapUserEntityToDTO)

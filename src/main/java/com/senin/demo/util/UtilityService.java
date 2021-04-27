@@ -2,6 +2,11 @@ package com.senin.demo.util;
 
 import com.senin.demo.exception.IncorrectUserNameException;
 import com.senin.demo.exception.IncorrectIdRuntimeException;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
+
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class UtilityService {
     private static final String ID_EMPTY = "ID can not be empty";
@@ -21,5 +26,15 @@ public class UtilityService {
         if(userName == null){
             throw new IncorrectUserNameException(userName);
         }
+    }
+
+    public static Map<String, String> getErrorsMap(Errors errors) {
+        return errors.getFieldErrors()
+                .stream()
+                .collect(Collectors
+                        .toMap(fieldError -> fieldError.getField() + "Error",
+                                FieldError::getDefaultMessage,
+                                (s, s2) -> s + ", " + s2));
+
     }
 }

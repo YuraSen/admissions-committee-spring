@@ -10,7 +10,7 @@ import java.io.IOException;
 public interface UserService {
     UserDTO findById(Long id);
 
-    Page<UserDTO> getAllCandidates(Pageable pageable);
+    Page<UserDTO> getAllUser(Pageable pageable);
 
     UserDTO findByUsername(String userName);
 

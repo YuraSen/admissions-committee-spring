@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class AdmissionRequestDTO {
     private Long id;
 
-    private Long candidateId;
+    private Long userId;
 
     private Long facultyId;
 
