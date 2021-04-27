@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 
 @Mapper
 public interface UserProfileMapper {
-    UserProfileDTO mapUserEntityToDTO(UserProfileEntity userProfileEntity);
+    UserProfileDTO mapUserProfileEntityToDTO(UserProfileEntity userProfileEntity);
 
-    UserProfileEntity mapUserDTOToEntity(UserProfileDTO userProfileDTO);
+    UserProfileEntity mapUserProfileDTOToEntity(UserProfileDTO userProfileDTO);
 }
