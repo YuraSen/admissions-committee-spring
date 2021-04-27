@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,10 +39,9 @@ public class UserController {
     @PostMapping("/api/user/registration")
     public String createUser(@RequestParam("file") MultipartFile file,
                                   @Valid UserDTO userDTO,
-                                  Errors errors,
-                                  Errors errorsProfile, Model model) throws IOException {
+                                  Errors errors, Model model){
 
-        if (errors.hasErrors() || errorsProfile.hasErrors()) {
+        if (errors.hasErrors()) {
             model.mergeAttributes(UtilityService.getErrorsMap(errors));
             model.addAttribute("userDTO", userDTO);
             return "/registration";

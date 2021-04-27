@@ -26,5 +26,5 @@ public class UserProfileDTO {
 
     private String school;
 
-    private String certificateFile;
+    private String fileName;
 }
