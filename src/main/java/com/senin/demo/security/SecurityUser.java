@@ -1,7 +1,7 @@
 package com.senin.demo.security;
 
-import com.senin.demo.dto.UserStatus;
-import com.senin.demo.entity.UserEntity;
+import com.senin.demo.dto.CandidateStatus;
+import com.senin.demo.entity.Candidate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class UserSecurity implements UserDetails {
+public class SecurityUser implements UserDetails {
     private final String username;
     private final String password;
     private final List<SimpleGrantedAuthority> authorities;
@@ -40,15 +40,15 @@ public class UserSecurity implements UserDetails {
     }
 
 
-    public static UserDetails getUserFromCandidateUser(UserEntity userEntity) {
+    public static UserDetails getUserFromCandidateUser(Candidate candidate) {
         return new org.springframework.security.core.userdetails.User(
-                userEntity.getUsername(),
-                userEntity.getPassword(),
-                userEntity.getUserStatus().equals(UserStatus.ACTIVE),
-                userEntity.getUserStatus().equals(UserStatus.ACTIVE),
-                userEntity.getUserStatus().equals(UserStatus.ACTIVE),
-                userEntity.getUserStatus().equals(UserStatus.ACTIVE),
-                userEntity.getAuthorities());
+                candidate.getUsername(),
+                candidate.getPassword(),
+                candidate.getCandidateStatus().equals(CandidateStatus.ACTIVE),
+                candidate.getCandidateStatus().equals(CandidateStatus.ACTIVE),
+                candidate.getCandidateStatus().equals(CandidateStatus.ACTIVE),
+                candidate.getCandidateStatus().equals(CandidateStatus.ACTIVE),
+                candidate.getAuthorities());
 
     }
 }

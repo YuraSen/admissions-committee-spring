@@ -1,12 +1,13 @@
 package com.senin.demo.dto;
 
-import com.senin.demo.entity.AdmissionRequestEntity;
+import com.senin.demo.entity.AdmissionRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.*;
 import java.util.List;
 
 import static java.util.Objects.nonNull;
@@ -19,27 +20,66 @@ import static java.util.Objects.nonNull;
 public class FacultyDTO {
     private Long id;
 
-    private String name;
+    @NotBlank(message = "fill the name on English")
+    @Length(max = 50, message = "name is too long")
+    private String nameEn;
 
-    private String description;
+    @NotBlank(message = "fill the name on Ukrainian")
+    @Length(max = 50, message = "name is too long")
+    private String nameUk;
 
-    private Integer totalCapacity;
+    @NotBlank(message = "fill the description on English")
+    @Length(max = 2048, message = "description is too long")
+    private String descriptionEn;
 
+    @NotBlank(message = "fill the description on Ukrainian")
+    @Length(max = 2048, message = "description is too long")
+    private String descriptionUk;
+
+    @NotNull(message = "Capacity can not be empty")
+    @Min(value = 0,message = "Capacity can not be less than 0")
+    @Max(value = 999,message = "Capacity can not be more than 999")
     private Integer budgetCapacity;
 
-    private String firstRequiredSubject;
+    @NotNull(message = "Capacity can not be empty")
+    @Min(value = 0,message = "Capacity can not be less than 0")
+    @Max(value = 999,message = "Capacity can not be more than 999")
+    private Integer totalCapacity;
 
-    private String secondRequiredSubject;
+    @NotBlank(message = "fill the subject on English")
+    @Length(max = 50, message = "subject name is too long")
+    private String requiredSubject1En;
 
-    private String thirdRequiredSubject;
+    @NotBlank(message = "fill the subject on Ukrainian")
+    @Length(max = 50, message = "subject name is too long")
+    private String requiredSubject1Uk;
+
+    @NotBlank(message = "fill the subject on English")
+    @Length(max = 50, message = "subject name is too long")
+    private String requiredSubject2En;
+
+    @NotBlank(message = "fill the subject on Ukrainian")
+    @Length(max = 50, message = "subject name is too long")
+    private String requiredSubject2Uk;
+
+    @NotBlank(message = "fill the subject on English")
+    @Length(max = 50, message = "subject name is too long")
+    private String requiredSubject3En;
+
+    @NotBlank(message = "fill the subject on Ukrainian")
+    @Length(max = 50, message = "subject name is too long")
+    private String requiredSubject3Uk;
 
     private boolean admissionOpen;
 
     @AssertTrue(message = "budget capacity must be less or equals to total capacity")
     private boolean isValid() {
-        return nonNull(budgetCapacity) && nonNull(totalCapacity) && budgetCapacity <= totalCapacity;
+        if (this.budgetCapacity != null && this.totalCapacity != null) {
+            return this.budgetCapacity <= this.totalCapacity;
+        }
+        return false;
     }
 
-    private List<AdmissionRequestEntity> admissionRequestEntities;
+    private List<AdmissionRequest> admissionRequestsList;
 
 }

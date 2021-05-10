@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDTO {
+public class CandidateDTO {
     private Long id;
 
     private String username;
@@ -18,6 +18,6 @@ public class UserDTO {
 
     private Role role;
 
-    private UserStatus userStatus;
+    private CandidateStatus candidateStatus;
 
 }

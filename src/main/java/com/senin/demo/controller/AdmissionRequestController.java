@@ -4,7 +4,6 @@ import com.senin.demo.dto.AdmissionRequestDTO;
 import com.senin.demo.dto.FacultyDTO;
 import com.senin.demo.exception.RequestAlreadyExistsException;
 import com.senin.demo.service.impl.AdmissionRequestServiceImpl;
-import com.senin.demo.util.UtilityService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -44,7 +43,7 @@ public class AdmissionRequestController {
             Errors errors, @AuthenticationPrincipal User currentUser,
             Model model) {
         model.addAttribute("facultyId", admissionRequestDTO.getFacultyId());
-        model.addAttribute("faculty", admissionRequestDTO.getFacultyEntity());
+        model.addAttribute("faculty", admissionRequestDTO.getFaculty());
         model.addAttribute("user", currentUser);
         if (errors.hasErrors()) {
             model.mergeAttributes(UtilityService.getErrorsMap(errors));

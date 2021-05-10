@@ -1,17 +1,59 @@
 package com.senin.demo.service;
 
+
 import com.senin.demo.dto.FacultyDTO;
+import com.senin.demo.entity.Faculty;
+import com.senin.demo.exception.FacultyNotFoundException;
+import com.senin.demo.repository.FacultyRepository;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
-public interface FacultyService {
-    FacultyDTO findById(Long id);
+@Slf4j
+@AllArgsConstructor(onConstructor = @__(@Autowired))
+@Service
+public class FacultyService {
+    private final FacultyRepository facultyRepository;
 
-    Page<FacultyDTO> getAllFaculties(Pageable pageable);
+    public Page<Faculty> getAllFaculties(Pageable pageable) {
+        return facultyRepository.findAll(pageable);
+    }
 
-    void deleteById(Long id);
+    public Faculty getById(Long id) {
+        return facultyRepository.findById(id)
+                .orElseThrow(() -> new FacultyNotFoundException("Faculty not found! by id: " + id));
+    }
 
-    void blockUnblockRegistration(FacultyDTO facultyDTO);
+    public void deleteById(Long id) {
+        facultyRepository.deleteById(id);
+        log.info("Faculty removed id: " + id);
+    }
 
-    FacultyDTO createFaculty(FacultyDTO facultyDTO);
+    public void blockUnblockRegistration(FacultyDTO facultyDTO) {
+
+        facultyRepository.blockUnblockRegistration(facultyDTO.getId(), facultyDTO.isAdmissionOpen());
+    }
+
+    public Faculty createFaculty(FacultyDTO facultyDTO) {
+        return facultyRepository.save(
+                Faculty.builder()
+                        .id(facultyDTO.getId())
+                        .nameEn(facultyDTO.getNameEn())
+                        .nameUk(facultyDTO.getNameUk())
+                        .descriptionEn(facultyDTO.getDescriptionEn())
+                        .descriptionUk(facultyDTO.getDescriptionUk())
+                        .budgetCapacity(facultyDTO.getBudgetCapacity())
+                        .totalCapacity(facultyDTO.getTotalCapacity())
+                        .requiredSubject1En(facultyDTO.getRequiredSubject1En())
+                        .requiredSubject1Uk(facultyDTO.getRequiredSubject1Uk())
+                        .requiredSubject2En(facultyDTO.getRequiredSubject2En())
+                        .requiredSubject2Uk(facultyDTO.getRequiredSubject2Uk())
+                        .requiredSubject3En(facultyDTO.getRequiredSubject3En())
+                        .requiredSubject3Uk(facultyDTO.getRequiredSubject3Uk())
+                        .admissionOpen(facultyDTO.getId() == null || facultyDTO.isAdmissionOpen())
+                        .build());
+    }
 }

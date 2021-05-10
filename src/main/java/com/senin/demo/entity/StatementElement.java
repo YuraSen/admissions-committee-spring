@@ -1,18 +1,16 @@
-package com.senin.demo.dto;
+package com.senin.demo.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.NamedEntityGraph;
-
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class UserProfileDTO {
-    private Long id;
+public class StatementElement {
+    private String facultyName;
 
     private String firstName;
 
@@ -20,11 +18,8 @@ public class UserProfileDTO {
 
     private String email;
 
-    private String city;
+    private int grade;
 
-    private String region;
+    private String status;
 
-    private String school;
-
-    private String fileName;
 }

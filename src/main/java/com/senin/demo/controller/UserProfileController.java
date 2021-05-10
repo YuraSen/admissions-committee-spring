@@ -1,9 +1,7 @@
 package com.senin.demo.controller;
 
-import com.senin.demo.dto.UserProfileDTO;
+import com.senin.demo.dto.CandidateProfileDTO;
 import com.senin.demo.service.impl.UserProfileServiceImpl;
-import com.senin.demo.service.impl.UserServiceImpl;
-import com.senin.demo.util.UtilityService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,46 +34,46 @@ public class UserProfileController {
 
     @PostMapping("/api/user/registration")
     public String createUser(@RequestParam("file") MultipartFile file,
-                             @Valid UserProfileDTO userProfileDTO,
+                             @Valid CandidateProfileDTO candidateProfileDTO,
                              Errors errorsProfile, Model model) throws IOException {
 
         if (errorsProfile.hasErrors()) {
             model.mergeAttributes(UtilityService.getErrorsMap(errorsProfile));
-            model.addAttribute("userProfileDTO", userProfileDTO);
+            model.addAttribute("userProfileDTO", candidateProfileDTO);
 
             return "/registration";
         }
         if (contentTypes.contains(file.getContentType())) {
-            userProfileDTO.setFileName(profileService.saveFile(file, uploadPath));
+            candidateProfileDTO.setFileName(profileService.saveFile(file, uploadPath));
         } else {
             model.addAttribute("errorMessage", "Wrong file format. Required: image/png, image/jpeg, image/gif ");
             return "/user/request_form";
         }
-        profileService.createUser(userProfileDTO);
+        profileService.createUser(candidateProfileDTO);
         return "redirect:/auth/login";
     }
 
     @PostMapping("/api/user/update")
     public String updateUser(@RequestParam("file") MultipartFile file,
                              @AuthenticationPrincipal User currentUser,
-                             @Valid UserProfileDTO userProfileDTO,
+                             @Valid CandidateProfileDTO candidateProfileDTO,
                              Errors errorsProfile, Model model) throws IOException {
 
         if (errorsProfile.hasErrors()) {
             model.mergeAttributes(UtilityService.getErrorsMap(errorsProfile));
             model.addAttribute("username", currentUser.getUsername());
-            model.addAttribute("userProfileDTO", userProfileDTO);
+            model.addAttribute("userProfileDTO", candidateProfileDTO);
             return "user/user_profile_edit";
         }
         if (!file.isEmpty()) {
             if (contentTypes.contains(file.getContentType())) {
-                userProfileDTO.setFileName(profileService.saveFile(file, uploadPath));
+                candidateProfileDTO.setFileName(profileService.saveFile(file, uploadPath));
             } else {
                 model.addAttribute("errorMessage", "Wrong file format. Required: image/png, image/jpeg, image/gif ");
                 return "user/user_profile_edit";
             }
         }
-        profileService.updateUserProfile(userProfileDTO);
+        profileService.updateUserProfile(candidateProfileDTO);
         return "redirect:/api/user/profile";
     }
 }

@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Builder
-public class UserProfileEntity {
+public class CandidateProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", unique = true, nullable = false)
@@ -41,6 +41,6 @@ public class UserProfileEntity {
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "usr_id", nullable = false)
-    private UserEntity userEntity;
+    private Candidate candidate;
 
 }

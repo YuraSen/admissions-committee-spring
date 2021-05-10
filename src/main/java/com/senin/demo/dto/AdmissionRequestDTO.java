@@ -1,11 +1,14 @@
 package com.senin.demo.dto;
 
-import com.senin.demo.entity.FacultyEntity;
-import com.senin.demo.entity.UserEntity;
+import com.senin.demo.entity.Faculty;
+import com.senin.demo.entity.Candidate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
@@ -14,19 +17,25 @@ import lombok.NoArgsConstructor;
 public class AdmissionRequestDTO {
     private Long id;
 
-    private Long userId;
+    private Long candidateId;
 
     private Long facultyId;
 
-    private UserEntity userEntity;
+    private Candidate candidate;
 
-    private FacultyEntity facultyEntity;
+    private Faculty faculty;
 
-    private Integer firstRequiredSubjectMark;
+    @NotNull(message = "can not be empty")
+    @Range(min = 1, max = 12, message = "grade should be from 1 to 12")
+    private Integer requiredSubject1Grade;
 
-    private Integer secondRequiredSubjectMark;
+    @NotNull(message = "can not be empty")
+    @Range(min = 1, max = 12, message = "grade should be from 1 to 12")
+    private Integer requiredSubject2Grade;
 
-    private Integer thirdRequiredSubjectMark;
+    @NotNull(message = "can not be empty")
+    @Range(min = 1, max = 12, message = "grade should be from 1 to 12")
+    private Integer requiredSubject3Grade;
 
     private AdmissionRequestStatus admissionRequestStatus;
 }

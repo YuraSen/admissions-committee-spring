@@ -2,7 +2,6 @@ package com.senin.demo.controller;
 
 import com.senin.demo.dto.FacultyDTO;
 import com.senin.demo.service.impl.FacultyServiceImpl;
-import com.senin.demo.util.UtilityService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

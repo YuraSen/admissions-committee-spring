@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 
 @Table(name = "faculty")
-public class FacultyEntity {
+public class Faculty {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", unique = true, nullable = false)
@@ -47,23 +47,23 @@ public class FacultyEntity {
     private boolean admissionOpen;
 
     @OneToMany(mappedBy = "faculty", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<AdmissionRequestEntity> admissionRequestEntityList;
+    private List<AdmissionRequest> admissionRequestList;
 
 
     public Long numberOfNewRequests() {
-        return admissionRequestEntityList.stream()
+        return admissionRequestList.stream()
                 .filter(ar -> ar.getAdmissionRequestStatus().ordinal() == AdmissionRequestStatus.NEW.ordinal())
                 .count();
     }
 
     public Long numberOfApprovedRequests() {
-        return admissionRequestEntityList.stream()
+        return admissionRequestList.stream()
                 .filter(ar -> ar.getAdmissionRequestStatus().ordinal() == AdmissionRequestStatus.APPROVED.ordinal())
                 .count();
     }
 
     public Long numberOfRejectedRequests() {
-        return admissionRequestEntityList.stream()
+        return admissionRequestList.stream()
                 .filter(ar -> ar.getAdmissionRequestStatus().ordinal() == AdmissionRequestStatus.REJECTED.ordinal())
                 .count();
     }

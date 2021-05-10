@@ -1,9 +1,8 @@
 package com.senin.demo.controller;
 
 
-import com.senin.demo.dto.UserDTO;
+import com.senin.demo.dto.CandidateDTO;
 import com.senin.demo.service.impl.UserServiceImpl;
-import com.senin.demo.util.UtilityService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,12 +37,12 @@ public class UserController {
 
     @PostMapping("/api/user/registration")
     public String createUser(@RequestParam("file") MultipartFile file,
-                                  @Valid UserDTO userDTO,
+                                  @Valid CandidateDTO candidateDTO,
                                   Errors errors, Model model){
 
         if (errors.hasErrors()) {
             model.mergeAttributes(UtilityService.getErrorsMap(errors));
-            model.addAttribute("userDTO", userDTO);
+            model.addAttribute("userDTO", candidateDTO);
             return "/registration";
         }
         if (contentTypes.contains(file.getContentType())) {
@@ -51,7 +50,7 @@ public class UserController {
             model.addAttribute("errorMessage", "Wrong file format. Required: image/png, image/jpeg, image/gif ");
             return "/user/request_form";
         }
-        userService.createUser(userDTO);
+        userService.createUser(candidateDTO);
         return "redirect:/auth/login";
     }
 
@@ -94,8 +93,8 @@ public class UserController {
     }
 
     @PostMapping("/admin/user/edit/{id}")
-    public String updateUser(UserDTO userDTO, @PathVariable String id) {
-        userService.update(userDTO);
+    public String updateUser(CandidateDTO candidateDTO, @PathVariable String id) {
+        userService.update(candidateDTO);
         return "redirect:/admin/user";
 
     }
