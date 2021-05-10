@@ -18,51 +18,53 @@ import java.util.List;
 @Table(name = "faculty")
 public class Faculty {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+    @Column(name = "name_en", nullable = false)
+    private String nameEn;
+    @Column(name = "name_uk", nullable = false)
+    private String nameUk;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "description_en", length = 2048, nullable = false)
+    private String descriptionEn;
+    @Column(name = "description_uk", length = 2048, nullable = false)
+    private String descriptionUk;
+    @Column(name = "budget_capacity", nullable = false)
+    private int budgetCapacity;
+    @Column(name = "total_capacity", nullable = false)
+    private int totalCapacity;
 
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "total_capacity")
-    private Integer totalCapacity;
-
-    @Column(name = "budget_capacity")
-    private Integer budgetCapacity;
-
-    @Column(name = "first_required_subject")
-    private String firstRequiredSubject;
-
-    @Column(name = "second_required_subject")
-    private String secondRequiredSubject;
-
-    @Column(name = "third_required_subject")
-    private String thirdRequiredSubject;
-
+    @Column(name = "req_subject1_en", nullable = false)
+    private String requiredSubject1En;
+    @Column(name = "req_subject1_uk", nullable = false)
+    private String requiredSubject1Uk;
+    @Column(name = "req_subject2_en", nullable = false)
+    private String requiredSubject2En;
+    @Column(name = "req_subject2_uk", nullable = false)
+    private String requiredSubject2Uk;
+    @Column(name = "req_subject3_en", nullable = false)
+    private String requiredSubject3En;
+    @Column(name = "req_subject3_uk", nullable = false)
+    private String requiredSubject3Uk;
     @Column(name = "admission_open", nullable = false)
     private boolean admissionOpen;
 
     @OneToMany(mappedBy = "faculty", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<AdmissionRequest> admissionRequestList;
 
-
-    public Long numberOfNewRequests() {
+    public Long numberOfRequestsNew() {
         return admissionRequestList.stream()
                 .filter(ar -> ar.getAdmissionRequestStatus().ordinal() == AdmissionRequestStatus.NEW.ordinal())
                 .count();
     }
 
-    public Long numberOfApprovedRequests() {
+    public Long numberOfRequestsApproved() {
         return admissionRequestList.stream()
                 .filter(ar -> ar.getAdmissionRequestStatus().ordinal() == AdmissionRequestStatus.APPROVED.ordinal())
                 .count();
     }
 
-    public Long numberOfRejectedRequests() {
+    public Long numberOfRequestsRejected() {
         return admissionRequestList.stream()
                 .filter(ar -> ar.getAdmissionRequestStatus().ordinal() == AdmissionRequestStatus.REJECTED.ordinal())
                 .count();

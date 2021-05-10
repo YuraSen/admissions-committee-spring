@@ -7,6 +7,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.WebAttributes;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +21,7 @@ import java.util.ResourceBundle;
 
 import static java.util.Objects.nonNull;
 
-@RestController
-@AllArgsConstructor(onConstructor = @__(@Autowired))
-@RequestMapping("/")
+@Controller
 public class MainController {
 
     @GetMapping("/")

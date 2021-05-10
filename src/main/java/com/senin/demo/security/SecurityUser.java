@@ -40,7 +40,7 @@ public class SecurityUser implements UserDetails {
     }
 
 
-    public static UserDetails getUserFromCandidateUser(Candidate candidate) {
+    public static UserDetails getUserFromCandidate(Candidate candidate) {
         return new org.springframework.security.core.userdetails.User(
                 candidate.getUsername(),
                 candidate.getPassword(),

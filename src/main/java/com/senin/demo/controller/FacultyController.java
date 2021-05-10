@@ -1,9 +1,11 @@
 package com.senin.demo.controller;
 
 import com.senin.demo.dto.FacultyDTO;
-import com.senin.demo.service.impl.FacultyServiceImpl;
+import com.senin.demo.entity.Faculty;
+import com.senin.demo.service.FacultyService;
+import com.senin.demo.util.ValidationErrorUtils;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -11,27 +13,29 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 
-@RestController
-@AllArgsConstructor(onConstructor = @__(@Autowired))
-@RequestMapping("/faculty")
+@Slf4j
+@Controller
+@AllArgsConstructor
 public class FacultyController {
-
-    private final FacultyServiceImpl facultyService;
+    private final FacultyService facultyService;
 
     @GetMapping("/faculties")
-    public String getAllFaculties(@PageableDefault(sort = {"name"}, direction = Sort.Direction.ASC, size = 5) Pageable pageable,
+    public String getAllFaculties(@PageableDefault(sort = {"nameEn"}, direction = Sort.Direction.ASC, size = 5) Pageable pageable,
                                   @AuthenticationPrincipal User user, Model model) {
 
         if (user.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"))) {
             return "redirect:/admin/workspace";
         } else {
-            Page<FacultyDTO> page = facultyService.getAllFaculties(pageable);
+            Page<Faculty> page = facultyService.getAllFaculties(pageable);
             model.addAttribute("page", page);
             model.addAttribute("url", "/faculties");
             return "faculties";
@@ -49,7 +53,7 @@ public class FacultyController {
                                    Errors errors,
                                    Model model) {
         if (errors.hasErrors()) {
-            model.mergeAttributes(UtilityService.getErrorsMap(errors));
+            model.mergeAttributes(ValidationErrorUtils.getErrorsMap(errors));
             model.addAttribute("faculty", facultyDTO);
             return "/admin/create-faculty";
         }
@@ -68,7 +72,7 @@ public class FacultyController {
 
     @GetMapping("/admin/faculty/edit/{id}")
     public String editFacultyWithId(@PathVariable Long id, Model model) {
-        model.addAttribute("faculty", facultyService.findById(id));
+        model.addAttribute("faculty", facultyService.getById(id));
         return "/admin/edit-faculty";
 
     }
@@ -79,7 +83,7 @@ public class FacultyController {
                                       Errors errors,
                                       Model model) {
         if (errors.hasErrors()) {
-            model.mergeAttributes(UtilityService.getErrorsMap(errors));
+            model.mergeAttributes(ValidationErrorUtils.getErrorsMap(errors));
             model.addAttribute("faculty", facultyDTO);
             return "/admin/edit-faculty";
         }
@@ -102,7 +106,7 @@ public class FacultyController {
     public String getAdminWorkspace(@PageableDefault(sort = {"nameEn"}, direction = Sort.Direction.ASC, size = 5) Pageable pageable,
                                     Model model) {
 
-        Page<FacultyDTO> page = facultyService.getAllFaculties(pageable);
+        Page<Faculty> page = facultyService.getAllFaculties(pageable);
         model.addAttribute("page", page);
         model.addAttribute("url", "/admin/workspace");
         return "/admin/admin_workspace";

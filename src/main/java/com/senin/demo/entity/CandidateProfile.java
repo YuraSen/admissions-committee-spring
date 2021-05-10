@@ -14,8 +14,7 @@ import javax.persistence.*;
 @Builder
 public class CandidateProfile {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "first_name")
@@ -27,6 +26,9 @@ public class CandidateProfile {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "address")
+    private String address;
+
     @Column(name = "city")
     private String city;
 
@@ -36,11 +38,13 @@ public class CandidateProfile {
     @Column(name = "school")
     private String school;
 
-    @Column(name = "certificate_file")
-    private String certificateFile;
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "usr_id", nullable = false)
+    @JoinColumn(name = "candidate_id", nullable = false)
     private Candidate candidate;
 
+    @Column(name = "certificate_file")
+    private String fileName;
 }

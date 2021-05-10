@@ -18,8 +18,9 @@ public class StatementElement {
 
     private String email;
 
+    private String contactNumber;
+
     private int grade;
 
     private String status;
-
 }

@@ -1,12 +1,13 @@
 package com.senin.demo.service;
 
-import com.training.admissions.dto.FacultyDTO;
-import com.training.admissions.entity.AdmissionRequest;
-import com.training.admissions.dto.AdmissionRequestStatus;
-import com.training.admissions.entity.Faculty;
-import com.training.admissions.entity.StatementElement;
-import com.training.admissions.exception.CanNotMakePDFException;
-import com.training.admissions.exception.StatementCreationException;
+
+import com.senin.demo.dto.AdmissionRequestStatus;
+import com.senin.demo.dto.FacultyDTO;
+import com.senin.demo.entity.AdmissionRequest;
+import com.senin.demo.entity.Faculty;
+import com.senin.demo.entity.StatementElement;
+import com.senin.demo.exception.CanNotMakePDFException;
+import com.senin.demo.exception.StatementCreationException;
 import lombok.AllArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
 public class StatementService {
     private static final String FILE_NAME = "src/main/resources/JasperDesign.jrxml";
     private static final String OUT_FILE = "src/main/resources/public/Reports.pdf";
-    private final com.training.admissions.service.FacultyService facultyService;
+    private final FacultyService facultyService;
 
     public List<AdmissionRequest> getStatementForFacultyWithId(Long id) {
         Faculty faculty = facultyService.getById(id);
