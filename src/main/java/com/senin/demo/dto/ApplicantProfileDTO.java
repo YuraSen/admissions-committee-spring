@@ -15,7 +15,7 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CandidateProfileDTO {
+public class ApplicantProfileDTO {
     private Long id;
 
     @NotBlank(message = "{first_name.not_empty}")
@@ -50,7 +50,7 @@ public class CandidateProfileDTO {
     @Pattern(regexp = "[0-9]+", message = "{phoneNumber.wrong_format}")
     private String phoneNumber;
 
-    private Long candidateId;
+    private Long applicantId;
 
     private String fileName;
 }

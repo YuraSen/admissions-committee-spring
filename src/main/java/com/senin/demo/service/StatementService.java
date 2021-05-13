@@ -35,14 +35,6 @@ public class StatementService {
         return getSortedListOfRequestForFaculty(faculty);
     }
 
-    /**
-     * Returns sorted list of admission requests for the faculty by the grade.
-     * Size of the list limited by "totalCapacity" field of Faculty entity.
-     *
-     * @param faculty
-     * @return List<AdmissionRequest>
-     */
-
     private List<AdmissionRequest> getSortedListOfRequestForFaculty(Faculty faculty) {
         return faculty.getAdmissionRequestList()
                 .stream()
@@ -54,13 +46,6 @@ public class StatementService {
                 .collect(Collectors.toList());
     }
 
-
-    /**
-     * Creating a pdf report out of statementElementList.
-     *
-     * @param facultyDTO
-     * @param author
-     */
     public void facultyStatementFinalize(FacultyDTO facultyDTO, String author) {
         List<AdmissionRequest> admissionRequests = getStatementForFacultyWithId(facultyDTO.getId());
         List<StatementElement> statementElementList = getStatementElements(admissionRequests);
@@ -72,34 +57,23 @@ public class StatementService {
         }
     }
 
-
-    /**
-     *
-     * @param admissionRequests
-     * @return
-     */
-
     private List<StatementElement> getStatementElements(List<AdmissionRequest> admissionRequests) {
         List<StatementElement> statementElementList = new ArrayList<>();
         for (int i = 0; i < admissionRequests.size(); i++) {
             statementElementList.add(StatementElement.builder()
                     .facultyName(admissionRequests.get(i).getFaculty().getNameEn())
-                    .firstName(admissionRequests.get(i).getCandidate().getCandidateProfile().getFirstName())
-                    .lastName(admissionRequests.get(i).getCandidate().getCandidateProfile().getLastName())
-                    .email(admissionRequests.get(i).getCandidate().getCandidateProfile().getEmail())
+                    .firstName(admissionRequests.get(i).getApplicant().getApplicantProfile().getFirstName())
+                    .lastName(admissionRequests.get(i).getApplicant().getApplicantProfile().getLastName())
+                    .email(admissionRequests.get(i).getApplicant().getApplicantProfile().getEmail())
                     .grade(admissionRequests.get(i).getSumOfGrades())
-                    .contactNumber(admissionRequests.get(i).getCandidate().getCandidateProfile().getPhoneNumber())
+                    .contactNumber(admissionRequests.get(i).getApplicant().getApplicantProfile().getPhoneNumber())
                     .status(i >= admissionRequests.get(i).getFaculty().getBudgetCapacity() ? "Contract" : "Budget")
                     .build());
         }
         return statementElementList;
     }
 
-
     public ResponseEntity<byte[]> getPDF() {
-
-
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
         String filename = "src\\main\\resources\\public\\Reports.pdf";

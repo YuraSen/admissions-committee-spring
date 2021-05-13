@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Builder
 @Table(name = "admission_request",
         uniqueConstraints = {@UniqueConstraint(
-                columnNames = {"candidate_id", "faculty_id"})})
+                columnNames = {"applicant_id", "faculty_id"})})
 public class AdmissionRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,9 +28,9 @@ public class AdmissionRequest {
     @Column(name = "status", nullable = false)
     private AdmissionRequestStatus admissionRequestStatus;
 
-    @ManyToOne(targetEntity = Candidate.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "candidate_id")
-    private Candidate candidate;
+    @ManyToOne(targetEntity = Applicant.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "applicant_id")
+    private Applicant applicant;
 
     @ManyToOne(targetEntity = Faculty.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "faculty_id")

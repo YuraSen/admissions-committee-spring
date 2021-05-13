@@ -8,7 +8,6 @@ import com.senin.demo.service.AdmissionRequestService;
 import com.senin.demo.util.ValidationErrorUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,21 +27,21 @@ import javax.validation.Valid;
 public class AdmissionRequestController {
     private final AdmissionRequestService admissionRequestService;
 
-    @GetMapping("/candidate/submit_request_form")
+    @GetMapping("/applicant/submit_request_form")
     public String getRequestForm(FacultyDTO facultyDTO,
                                  @AuthenticationPrincipal User currentUser, Model model) {
 
         if (facultyDTO.isAdmissionOpen()) {
             AdmissionRequestDTO admissionRequestDTO = admissionRequestService.getAdmissionRequestDTO(facultyDTO.getId(), currentUser.getUsername());
             model.addAttribute("faculty", admissionRequestDTO.getFaculty());
-            model.addAttribute("candidate", admissionRequestDTO.getCandidate());
-            return "/candidate/request_form";
+            model.addAttribute("applicant", admissionRequestDTO.getApplicant());
+            return "/applicant/request_form";
         }
-        return "/candidate/candidate_requests";
+        return "/applicant/applicant_requests";
     }
 
-    @PostMapping("/candidate/submit_request")
-    public String createRequestFromCandidate(
+    @PostMapping("/applicant/submit_request")
+    public String createRequestFromApplicant(
             @Valid AdmissionRequestDTO admissionRequestDTO,
             Errors errors, @AuthenticationPrincipal User currentUser,
             Model model) {
@@ -50,21 +49,21 @@ public class AdmissionRequestController {
                 .getAdmissionRequestDTO(admissionRequestDTO.getFacultyId(), currentUser.getUsername());
         model.addAttribute("facultyId", admissionRequest.getFaculty().getId());
         model.addAttribute("faculty", admissionRequest.getFaculty());
-        model.addAttribute("candidate", admissionRequest.getCandidate());
+        model.addAttribute("applicant", admissionRequest.getApplicant());
         if (errors.hasErrors()) {
             model.mergeAttributes(ValidationErrorUtils.getErrorsMap(errors));
-            return "/candidate/request_form";
+            return "/applicant/request_form";
         }
         try {
             admissionRequestService.saveAdmissionRequest(admissionRequestDTO);
         } catch (RequestAlreadyExistsException e) {
             model.addAttribute("errorMessage", e.getMessage());
-            return "/candidate/request_form";
+            return "/applicant/request_form";
         }
-        return "redirect:/candidate/candidate_requests";
+        return "redirect:/applicant/applicant_requests";
     }
 
-    @GetMapping("/candidate/candidate_requests")
+    @GetMapping("/applicant/applicant_requests")
     public String getAllUserRequests(@PageableDefault(sort = {"id"},
             direction = Sort.Direction.ASC, size = 5) Pageable pageable,
                                      @AuthenticationPrincipal User currentUser
@@ -72,16 +71,16 @@ public class AdmissionRequestController {
 
         Page<AdmissionRequest> page = admissionRequestService.getAdmissionRequestsForUserWithUsername(currentUser.getUsername(), pageable);
         model.addAttribute("page", page);
-        model.addAttribute("url", "/candidate/candidate_requests");
+        model.addAttribute("url", "/applicant/applicant_requests");
         model.addAttribute("username", currentUser.getUsername());
         model.addAttribute("requests_list", page);
-        return "/candidate/candidate_requests";
+        return "/applicant/applicant_requests";
     }
 
-    @PostMapping("/candidate/delete_request/{id}")
+    @PostMapping("/applicant/delete_request/{id}")
     public String deleteRequest(@PathVariable(name = "id") Long id) {
         admissionRequestService.deleteRequest(id);
-        return "redirect:/candidate/candidate_requests";
+        return "redirect:/applicant/applicant_requests";
     }
 
     @GetMapping("/admin/requests_of_faculty/{id}")

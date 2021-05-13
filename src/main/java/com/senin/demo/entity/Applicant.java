@@ -1,7 +1,7 @@
 package com.senin.demo.entity;
 
 import com.senin.demo.dto.Role;
-import com.senin.demo.dto.CandidateStatus;
+import com.senin.demo.dto.ApplicantStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,8 +17,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "candidate")
-public class Candidate {
+@Table(name = "applicant")
+public class Applicant {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", unique = true, nullable = false)
@@ -35,15 +35,15 @@ public class Candidate {
     private Role role;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "candidate_status")
-    private CandidateStatus candidateStatus;
+    @Column(name = "applicant_status")
+    private ApplicantStatus applicantStatus;
 
     @OneToOne(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
-            mappedBy = "candidate")
-    private CandidateProfile candidateProfile;
+            mappedBy = "applicant")
+    private ApplicantProfile applicantProfile;
 
-    @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<AdmissionRequest> admissionRequestList;
 
     public Set<SimpleGrantedAuthority> getAuthorities() {

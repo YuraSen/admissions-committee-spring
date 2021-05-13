@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CandidateDTO {
+public class ApplicantDTO {
     private Long id;
 
     @NotBlank(message = "{username.not_empty}")
@@ -24,6 +24,6 @@ public class CandidateDTO {
 
     private Role role;
 
-    private CandidateStatus candidateStatus;
+    private ApplicantStatus applicantStatus;
 
 }

@@ -12,7 +12,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Builder
-public class CandidateProfile {
+@Table(name = "applicant_profile")
+public class ApplicantProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
@@ -42,8 +43,8 @@ public class CandidateProfile {
     private String phoneNumber;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "candidate_id", nullable = false)
-    private Candidate candidate;
+    @JoinColumn(name = "applicant_id", nullable = false)
+    private Applicant applicant;
 
     @Column(name = "certificate_file")
     private String fileName;

@@ -1,7 +1,7 @@
 package com.senin.demo.security;
 
-import com.senin.demo.dto.CandidateStatus;
-import com.senin.demo.entity.Candidate;
+import com.senin.demo.dto.ApplicantStatus;
+import com.senin.demo.entity.Applicant;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -40,15 +40,15 @@ public class SecurityUser implements UserDetails {
     }
 
 
-    public static UserDetails getUserFromCandidate(Candidate candidate) {
+    public static UserDetails getUserFromApplicant(Applicant applicant) {
         return new org.springframework.security.core.userdetails.User(
-                candidate.getUsername(),
-                candidate.getPassword(),
-                candidate.getCandidateStatus().equals(CandidateStatus.ACTIVE),
-                candidate.getCandidateStatus().equals(CandidateStatus.ACTIVE),
-                candidate.getCandidateStatus().equals(CandidateStatus.ACTIVE),
-                candidate.getCandidateStatus().equals(CandidateStatus.ACTIVE),
-                candidate.getAuthorities());
+                applicant.getUsername(),
+                applicant.getPassword(),
+                applicant.getApplicantStatus().equals(ApplicantStatus.ACTIVE),
+                applicant.getApplicantStatus().equals(ApplicantStatus.ACTIVE),
+                applicant.getApplicantStatus().equals(ApplicantStatus.ACTIVE),
+                applicant.getApplicantStatus().equals(ApplicantStatus.ACTIVE),
+                applicant.getAuthorities());
 
     }
 }

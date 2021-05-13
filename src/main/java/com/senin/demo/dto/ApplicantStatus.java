@@ -1,5 +1,5 @@
 package com.senin.demo.dto;
 
-public enum CandidateStatus {
+public enum ApplicantStatus {
     ACTIVE, BLOCKED;
 }

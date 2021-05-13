@@ -3,6 +3,6 @@
 </head>
 <body>
 
-<h2>Log out!</h2>
-
+<h2>Log outed!!!</h2>
+<#include "fragments/nav-bar.ftl" />
 </body>

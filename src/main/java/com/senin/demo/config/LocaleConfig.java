@@ -34,9 +34,9 @@ public class LocaleConfig implements WebMvcConfigurer {
     }
     @Bean
     public LocalValidatorFactoryBean getValidator() {
-        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
-        bean.setValidationMessageSource(messageSource());
-        return bean;
+        LocalValidatorFactoryBean localValidatorFactoryBean = new LocalValidatorFactoryBean();
+        localValidatorFactoryBean.setValidationMessageSource(messageSource());
+        return localValidatorFactoryBean;
     }
     @Bean
     public MessageSource messageSource() {

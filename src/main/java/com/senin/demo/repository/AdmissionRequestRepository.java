@@ -15,7 +15,7 @@ import javax.transaction.Transactional;
 @Repository
 public interface AdmissionRequestRepository extends JpaRepository<AdmissionRequest, Long> {
 
-    Page<AdmissionRequest> findAllByCandidate_Username(String username, Pageable pageable);
+    Page<AdmissionRequest> findAllByApplicant_Username(String username, Pageable pageable);
 
     Page<AdmissionRequest> findAllByFaculty_Id(Long id, Pageable pageable);
 

@@ -1,8 +1,8 @@
 package com.senin.demo.repository;
 
 import com.senin.demo.dto.Role;
-import com.senin.demo.dto.CandidateStatus;
-import com.senin.demo.entity.Candidate;
+import com.senin.demo.dto.ApplicantStatus;
+import com.senin.demo.entity.Applicant;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,18 +14,18 @@ import org.springframework.stereotype.Repository;
 import javax.transaction.Transactional;
 import java.util.Optional;
 @Repository
-public interface CandidateRepository extends JpaRepository<Candidate, Long> {
+public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
     @Transactional
     @Modifying
-    @Query("UPDATE Candidate  c set c.role = :role," +
-            "c.candidateStatus=:candidateStatus WHERE c.id = :id")
-    int setCandidateUpdate(@Param("id") Long id,
+    @Query("UPDATE Applicant a set a.role = :role," +
+            "a.applicantStatus=:applicantStatus WHERE a.id = :id")
+    int setApplicantUpdate(@Param("id") Long id,
                            @Param("role") Role role,
-                           @Param("candidateStatus") CandidateStatus candidateStatus);
+                           @Param("applicantStatus") ApplicantStatus applicantStatus);
 
 
-    Page<Candidate> findAll(Pageable pageable);
+    Page<Applicant> findAll(Pageable pageable);
 
 
-    Optional<Candidate> findByUsername(String username);
+    Optional<Applicant> findByUsername(String username);
 }

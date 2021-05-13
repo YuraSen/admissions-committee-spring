@@ -6,10 +6,14 @@
 </head>
 <body>
 
+
+<#include "fragments/nav-bar.ftl"/>
 <h2>Success Login</h2>
 
 <form action="/auth/logout" method="post">
     <button type="submit">Logout</button>
 </form>
+<br>
+<br>
 </body>
 </html>

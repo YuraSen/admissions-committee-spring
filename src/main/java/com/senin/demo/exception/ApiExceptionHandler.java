@@ -7,8 +7,8 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice
 public class ApiExceptionHandler {
 
-    @ExceptionHandler(value = com.training.admissions.exception.CandidateAlreadyExistsException.class)
-    public ModelAndView handleCandidateAlreadyExistsException(com.training.admissions.exception.CandidateAlreadyExistsException ex) {
+    @ExceptionHandler(value = ApplicantAlreadyExistsException.class)
+    public ModelAndView handleApplicantAlreadyExistsException(ApplicantAlreadyExistsException ex) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/registration");
         modelAndView.addObject("errorMessage", ex.getMessage());
@@ -16,8 +16,8 @@ public class ApiExceptionHandler {
     }
 
 
-    @ExceptionHandler(value = com.training.admissions.exception.CandidateNotFoundException.class)
-    public ModelAndView handleCandidateNotFoundException(com.training.admissions.exception.CandidateNotFoundException ex) {
+    @ExceptionHandler(value = ApplicantNotFoundException.class)
+    public ModelAndView handleApplicantNotFoundException(ApplicantNotFoundException ex) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/errorPage");
         modelAndView.addObject("errorMessage", ex.getMessage());
@@ -33,18 +33,8 @@ public class ApiExceptionHandler {
         return modelAndView;
     }
 
-//    @ExceptionHandler(value = RequestAlreadyExistsException.class)
-//    public ModelAndView handleRequestAlreadyExistsException(RequestAlreadyExistsException ex) {
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("/errorPage");
-//        Locale locale = LocaleContextHolder.getLocale();
-//        ResourceBundle bundle = ResourceBundle.getBundle("messages", locale);
-//        modelAndView.addObject("errorMessage",bundle.getObject("request.already.exists.error"));
-//        return modelAndView;
-//    }
-
-    @ExceptionHandler(value = com.training.admissions.exception.RequestNotFoundException.class)
-    public ModelAndView handleRequestNotFoundException(com.training.admissions.exception.RequestNotFoundException ex) {
+    @ExceptionHandler(value = RequestNotFoundException.class)
+    public ModelAndView handleRequestNotFoundException(RequestNotFoundException ex) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/errorPage");
         modelAndView.addObject("errorMessage", ex.getMessage());
@@ -61,8 +51,8 @@ public class ApiExceptionHandler {
     }
 
 
-    @ExceptionHandler(value = com.training.admissions.exception.StatementCreationException.class)
-    public ModelAndView handleStatementCreationException(com.training.admissions.exception.StatementCreationException ex) {
+    @ExceptionHandler(value = StatementCreationException.class)
+    public ModelAndView handleStatementCreationException(StatementCreationException ex) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/errorPage");
         modelAndView.addObject("errorMessage", ex.getMessage());

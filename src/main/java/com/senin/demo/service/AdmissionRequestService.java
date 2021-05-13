@@ -4,7 +4,7 @@ import com.senin.demo.dto.AdmissionRequestDTO;
 
 import com.senin.demo.dto.AdmissionRequestStatus;
 import com.senin.demo.entity.AdmissionRequest;
-import com.senin.demo.entity.Candidate;
+import com.senin.demo.entity.Applicant;
 import com.senin.demo.entity.Faculty;
 import com.senin.demo.exception.RequestAlreadyExistsException;
 import com.senin.demo.exception.RequestNotFoundException;
@@ -24,7 +24,7 @@ public class AdmissionRequestService {
     @Value("${upload.path}")
     private String uploadPath;
     private final AdmissionRequestRepository admissionRequestRepository;
-    private final CandidateService candidateService;
+    private final ApplicantService applicantService;
     private final FacultyService facultyService;
 
     public Integer updateStatusOfRequest(AdmissionRequestDTO admissionRequestDTO) {
@@ -38,19 +38,19 @@ public class AdmissionRequestService {
 
     public Page<AdmissionRequest> getAdmissionRequestsForUserWithUsername(String username, Pageable pageable) {
         return admissionRequestRepository
-                .findAllByCandidate_Username(username, pageable);
+                .findAllByApplicant_Username(username, pageable);
     }
 
     public AdmissionRequest saveAdmissionRequest(AdmissionRequestDTO admissionRequestDTO) {
         try {
-            Candidate candidate = Candidate.builder().id(admissionRequestDTO.getCandidateId()).build();
+            Applicant applicant = Applicant.builder().id(admissionRequestDTO.getApplicantId()).build();
             Faculty faculty = Faculty.builder().id(admissionRequestDTO.getFacultyId()).build();
 
             return admissionRequestRepository.save(
                     AdmissionRequest.builder()
                             .id(admissionRequestDTO.getId())
                             .admissionRequestStatus(AdmissionRequestStatus.NEW)
-                            .candidate(candidate)
+                            .applicant(applicant)
                             .faculty(faculty)
                             .requiredSubject1Grade(admissionRequestDTO.getRequiredSubject1Grade())
                             .requiredSubject2Grade(admissionRequestDTO.getRequiredSubject2Grade())
@@ -72,8 +72,8 @@ public class AdmissionRequestService {
     }
 
     public AdmissionRequestDTO getAdmissionRequestDTO(Long facultyId, String username) {
-        Candidate candidate = candidateService.getByUsername(username);
+        Applicant applicant = applicantService.getByUsername(username);
         Faculty faculty = facultyService.getById(facultyId);
-        return AdmissionRequestDTO.builder().candidate(candidate).faculty(faculty).build();
+        return AdmissionRequestDTO.builder().applicant(applicant).faculty(faculty).build();
     }
 }
