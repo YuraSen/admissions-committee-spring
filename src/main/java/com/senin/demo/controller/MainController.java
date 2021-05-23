@@ -1,7 +1,5 @@
 package com.senin.demo.controller;
 
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
@@ -10,9 +8,7 @@ import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -21,25 +17,26 @@ import java.util.ResourceBundle;
 
 import static java.util.Objects.nonNull;
 
+import static com.senin.demo.controller.ControllerAttributeConstant.*;
+
 @Controller
 public class MainController {
 
     @GetMapping("/")
     public String getMainPage() {
-        return "index";
+        return INDEX;
     }
 
     @GetMapping("/registration")
     public String getRegistrationPage() {
-        return "registration";
+        return REGISTRATION;
     }
-
 
     @GetMapping("/auth/login")
     public String login(Model model, HttpServletRequest request,
-                        @RequestParam(value = "error", required = false) Boolean error) {
+                        @RequestParam(value = ERROR, required = false) Boolean error) {
         Locale locale = LocaleContextHolder.getLocale();
-        ResourceBundle bundle = ResourceBundle.getBundle("messages", locale);
+        ResourceBundle bundle = ResourceBundle.getBundle(MESSAGES, locale);
         if (nonNull(error)) {
             HttpSession session = request.getSession(false);
             String errorMessage = null;
@@ -48,14 +45,14 @@ public class MainController {
                         .getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
                 if (nonNull(authenticationException)) {
                     if (authenticationException instanceof BadCredentialsException) {
-                        errorMessage = (String) bundle.getObject("badCredentials");
+                        errorMessage = (String) bundle.getObject(BAD_CREDENTIALS);
                     }
                     if (authenticationException instanceof LockedException) {
-                        errorMessage = (String) bundle.getObject("disabled");
+                        errorMessage = (String) bundle.getObject(DISABLED);
                     }
                 }
             }
-            model.addAttribute("errorMessage", errorMessage);
+            model.addAttribute(ERROR_MESSAGE, errorMessage);
             return "login";
 
         }
@@ -63,7 +60,7 @@ public class MainController {
     }
     @GetMapping("/auth/success")
     public String getSuccessPage() {
-        return "success";
+        return SUCCESS;
     }
 
 }

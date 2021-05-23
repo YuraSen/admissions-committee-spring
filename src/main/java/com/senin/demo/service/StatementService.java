@@ -28,6 +28,9 @@ import java.util.stream.Collectors;
 public class StatementService {
     private static final String FILE_NAME = "src/main/resources/JasperDesign.jrxml";
     private static final String OUT_FILE = "src/main/resources/public/Reports.pdf";
+    private static final String CAN_NOT_CREATE_STATEMENT_REPORT = "Can not create statement report";
+    private static final String CAN_NOT_PREPARE_PDF_STATEMENT = "Can not prepare PDF statement";
+
     private final FacultyService facultyService;
 
     public List<AdmissionRequest> getStatementForFacultyWithId(Long id) {
@@ -53,7 +56,7 @@ public class StatementService {
         try {
             createPdfReport(statementElementList, author);
         } catch (FileNotFoundException | JRException e) {
-            throw new StatementCreationException("Can not create statement report");
+            System.out.println(e);
         }
     }
 
@@ -79,17 +82,11 @@ public class StatementService {
         String filename = "src\\main\\resources\\public\\Reports.pdf";
         File file = new File(filename);
 
-        byte[] fileContent;
-        try {
-            fileContent = Files.readAllBytes(file.toPath());
-        } catch (IOException e) {
-            throw new CanNotMakePDFException("Can not prepare PDF statement");
-        }
+        byte[] fileContent = getFileContent(file);
 
         headers.add("content-disposition", "inline;filename=" + filename);
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-        return new ResponseEntity<byte[]>(fileContent
-                , headers, HttpStatus.OK);
+        return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
     }
 
     private void createPdfReport(final List<StatementElement> statementElementList, String author) throws JRException, FileNotFoundException {
@@ -104,7 +101,14 @@ public class StatementService {
         OutputStream outputSteam = new FileOutputStream(file);
 
         JasperExportManager.exportReportToPdfStream(jasperPrint, outputSteam);
+    }
 
+    private byte[] getFileContent(File file) {
+        try {
+            return Files.readAllBytes(file.toPath());
+        } catch (IOException e) {
+            throw new CanNotMakePDFException(CAN_NOT_PREPARE_PDF_STATEMENT);
+        }
     }
 
 }

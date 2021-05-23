@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 
+import static com.senin.demo.controller.ControllerAttributeConstant.*;
+
 @Slf4j
 @Controller
 @AllArgsConstructor
@@ -36,8 +38,8 @@ public class FacultyController {
             return "redirect:/admin/workspace";
         } else {
             Page<Faculty> page = facultyService.getAllFaculties(pageable);
-            model.addAttribute("page", page);
-            model.addAttribute("url", "/faculties");
+            model.addAttribute(PAGE, page);
+            model.addAttribute(URL, "/faculties");
             return "faculties";
         }
     }
@@ -54,7 +56,7 @@ public class FacultyController {
                                    Model model) {
         if (errors.hasErrors()) {
             model.mergeAttributes(ValidationErrorUtils.getErrorsMap(errors));
-            model.addAttribute("faculty", facultyDTO);
+            model.addAttribute(FACULTY, facultyDTO);
             return "/admin/create-faculty";
         }
         facultyService.createFaculty(facultyDTO);
@@ -72,7 +74,7 @@ public class FacultyController {
 
     @GetMapping("/admin/faculty/edit/{id}")
     public String editFacultyWithId(@PathVariable Long id, Model model) {
-        model.addAttribute("faculty", facultyService.getById(id));
+        model.addAttribute(FACULTY, facultyService.getById(id));
         return "/admin/edit-faculty";
 
     }
@@ -84,7 +86,7 @@ public class FacultyController {
                                       Model model) {
         if (errors.hasErrors()) {
             model.mergeAttributes(ValidationErrorUtils.getErrorsMap(errors));
-            model.addAttribute("faculty", facultyDTO);
+            model.addAttribute(FACULTY, facultyDTO);
             return "/admin/edit-faculty";
         }
 
@@ -107,8 +109,8 @@ public class FacultyController {
                                     Model model) {
 
         Page<Faculty> page = facultyService.getAllFaculties(pageable);
-        model.addAttribute("page", page);
-        model.addAttribute("url", "/admin/workspace");
+        model.addAttribute(PAGE, page);
+        model.addAttribute(URL, "/admin/workspace");
         return "/admin/admin_workspace";
 
     }

@@ -21,10 +21,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static com.senin.demo.controller.ControllerAttributeConstant.*;
+
 @Slf4j
 @Controller
 @AllArgsConstructor
-public class AdmissionRequestController {
+public class AdmissionRequestController{
+
     private final AdmissionRequestService admissionRequestService;
 
     @GetMapping("/applicant/submit_request_form")
@@ -33,8 +36,8 @@ public class AdmissionRequestController {
 
         if (facultyDTO.isAdmissionOpen()) {
             AdmissionRequestDTO admissionRequestDTO = admissionRequestService.getAdmissionRequestDTO(facultyDTO.getId(), currentUser.getUsername());
-            model.addAttribute("faculty", admissionRequestDTO.getFaculty());
-            model.addAttribute("applicant", admissionRequestDTO.getApplicant());
+            model.addAttribute(FACULTY, admissionRequestDTO.getFaculty());
+            model.addAttribute(APPLICANT, admissionRequestDTO.getApplicant());
             return "/applicant/request_form";
         }
         return "/applicant/applicant_requests";
@@ -47,9 +50,9 @@ public class AdmissionRequestController {
             Model model) {
         AdmissionRequestDTO admissionRequest = admissionRequestService
                 .getAdmissionRequestDTO(admissionRequestDTO.getFacultyId(), currentUser.getUsername());
-        model.addAttribute("facultyId", admissionRequest.getFaculty().getId());
-        model.addAttribute("faculty", admissionRequest.getFaculty());
-        model.addAttribute("applicant", admissionRequest.getApplicant());
+        model.addAttribute(FACULTY_ID, admissionRequest.getFaculty().getId());
+        model.addAttribute(FACULTY, admissionRequest.getFaculty());
+        model.addAttribute(APPLICANT, admissionRequest.getApplicant());
         if (errors.hasErrors()) {
             model.mergeAttributes(ValidationErrorUtils.getErrorsMap(errors));
             return "/applicant/request_form";
@@ -70,15 +73,15 @@ public class AdmissionRequestController {
             , Model model) {
 
         Page<AdmissionRequest> page = admissionRequestService.getAdmissionRequestsForUserWithUsername(currentUser.getUsername(), pageable);
-        model.addAttribute("page", page);
-        model.addAttribute("url", "/applicant/applicant_requests");
-        model.addAttribute("username", currentUser.getUsername());
-        model.addAttribute("requests_list", page);
+        model.addAttribute(PAGE, page);
+        model.addAttribute(URL, "/applicant/applicant_requests");
+        model.addAttribute(USERNAME, currentUser.getUsername());
+        model.addAttribute(REQUESTS_LIST, page);
         return "/applicant/applicant_requests";
     }
 
     @PostMapping("/applicant/delete_request/{id}")
-    public String deleteRequest(@PathVariable(name = "id") Long id) {
+    public String deleteRequest(@PathVariable(name = ID) Long id) {
         admissionRequestService.deleteRequest(id);
         return "redirect:/applicant/applicant_requests";
     }
@@ -88,14 +91,14 @@ public class AdmissionRequestController {
                                             @PathVariable(name = "id") Long id, Model model) {
         Page<AdmissionRequest> page = admissionRequestService.getAdmissionRequestsForFacultyWithId(id, pageable);
 
-        model.addAttribute("page", page);
-        model.addAttribute("url", "/admin/requests_of_faculty/" + id);
+        model.addAttribute(PAGE, page);
+        model.addAttribute(URL, "/admin/requests_of_faculty/" + id);
 
         return "/admin/requests_of_faculty";
     }
 
     @GetMapping("/admin/requests_of_faculty/request/{id}")
-    public String getRequestById(@PathVariable(name = "id") Long id, Model model) {
+    public String getRequestById(@PathVariable(name = ID) Long id, Model model) {
         model.addAttribute("request", admissionRequestService.getById(id));
         return "/admin/request";
     }

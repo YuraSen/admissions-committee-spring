@@ -27,8 +27,8 @@ public class AdmissionRequestService {
     private final ApplicantService applicantService;
     private final FacultyService facultyService;
 
-    public Integer updateStatusOfRequest(AdmissionRequestDTO admissionRequestDTO) {
-        return admissionRequestRepository.updateRequest(admissionRequestDTO.getId(), admissionRequestDTO.getAdmissionRequestStatus());
+    public void updateStatusOfRequest(AdmissionRequestDTO admissionRequestDTO) {
+        admissionRequestRepository.updateRequest(admissionRequestDTO.getId(), admissionRequestDTO.getAdmissionRequestStatus());
     }
 
     public Page<AdmissionRequest> getAdmissionRequestsForFacultyWithId(Long id, Pageable pageable) {

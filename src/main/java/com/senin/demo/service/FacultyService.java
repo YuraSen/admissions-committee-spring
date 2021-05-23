@@ -1,6 +1,8 @@
 package com.senin.demo.service;
 
 
+import java.util.Objects;
+
 import com.senin.demo.dto.FacultyDTO;
 import com.senin.demo.entity.Faculty;
 import com.senin.demo.exception.FacultyNotFoundException;
@@ -53,7 +55,7 @@ public class FacultyService {
                         .requiredSubject2Uk(facultyDTO.getRequiredSubject2Uk())
                         .requiredSubject3En(facultyDTO.getRequiredSubject3En())
                         .requiredSubject3Uk(facultyDTO.getRequiredSubject3Uk())
-                        .admissionOpen(facultyDTO.getId() == null || facultyDTO.isAdmissionOpen())
+                        .admissionOpen(Objects.isNull(facultyDTO.getId()) || facultyDTO.isAdmissionOpen())
                         .build());
     }
 }

@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 @AllArgsConstructor
 public class StatementController {
+    private static final String FACULTY_STATEMENT = "faculty_statement";
+    private static final String FACULTY_ID = "faculty_id";
     private final StatementService statementService;
 
     @GetMapping("/admin/statement/faculty/{id}")
     public String facultyStatement(@PathVariable(name = "id") Long id, Model model) {
-        model.addAttribute("faculty_statement", statementService.getStatementForFacultyWithId(id));
-        model.addAttribute("faculty_id", id);
+        model.addAttribute(FACULTY_STATEMENT, statementService.getStatementForFacultyWithId(id));
+        model.addAttribute(FACULTY_ID, id);
         return "/admin/statement";
     }
 

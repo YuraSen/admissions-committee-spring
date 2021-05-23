@@ -20,12 +20,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
+
 
 @Slf4j
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @Service
 public class ApplicantService {
+    private static final String DOT = ".";
+    private static final String SLASH = "/";
+
     private final ApplicantProfileRepository applicantProfileRepository;
     private final ApplicantRepository applicantRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
@@ -35,16 +40,13 @@ public class ApplicantService {
     }
 
     public Applicant getById(Long id) {
-        return
-                applicantRepository.findById(id)
-                        .orElseThrow(
-                                () -> new ApplicantNotFoundException("Applicant with id= " + id + " not found"));
+        return applicantRepository.findById(id)
+                .orElseThrow(() -> new ApplicantNotFoundException("Applicant with id= " + id + " not found"));
     }
 
     public Applicant getByUsername(String name) {
         return applicantRepository.findByUsername(name)
-                .orElseThrow(
-                        () -> new ApplicantNotFoundException("Applicant with name: " + name + " not found"));
+                .orElseThrow(() -> new ApplicantNotFoundException("Applicant with name: " + name + " not found"));
     }
 
     public Applicant createApplicant(ApplicantDTO applicantDTO, ApplicantProfileDTO applicantProfileDTO) {
@@ -77,9 +79,10 @@ public class ApplicantService {
         return applicant;
     }
 
-    public Integer updateApplicant(ApplicantDTO applicantDTO) {
+    public void updateApplicant(ApplicantDTO applicantDTO) {
         setApplicantRequestsStatus(applicantDTO);
-        return applicantRepository.setApplicantUpdate(applicantDTO.getId(), applicantDTO.getRole(), applicantDTO.getApplicantStatus());
+        applicantRepository.setApplicantUpdate(applicantDTO.getId(), applicantDTO.getRole(),
+                applicantDTO.getApplicantStatus());
     }
 
     public void setApplicantRequestsStatus(ApplicantDTO applicantDTO) {
@@ -89,7 +92,8 @@ public class ApplicantService {
                 ar.setAdmissionRequestStatus(AdmissionRequestStatus.REJECTED);
             }
         }
-        if (applicantDTO.getApplicantStatus() == ApplicantStatus.ACTIVE && applicant.getApplicantStatus() == ApplicantStatus.BLOCKED) {
+        if (applicantDTO.getApplicantStatus() == ApplicantStatus.ACTIVE
+                && applicant.getApplicantStatus() == ApplicantStatus.BLOCKED) {
             for (AdmissionRequest ar : applicant.getAdmissionRequestList()) {
                 ar.setAdmissionRequestStatus(AdmissionRequestStatus.NEW);
             }
@@ -103,33 +107,27 @@ public class ApplicantService {
     }
 
     public Integer updateApplicantProfile(ApplicantProfileDTO applicantProfileDTO) {
-        return applicantProfileRepository.setProfileUpdate(
-                applicantProfileDTO.getId(),
-                applicantProfileDTO.getFirstName(),
-                applicantProfileDTO.getLastName(),
-                applicantProfileDTO.getEmail(),
-                applicantProfileDTO.getAddress(),
-                applicantProfileDTO.getCity(),
-                applicantProfileDTO.getRegion(),
-                applicantProfileDTO.getSchool(),
-                applicantProfileDTO.getPhoneNumber(),
-                applicantProfileDTO.getFileName());
+        return applicantProfileRepository.setProfileUpdate(applicantProfileDTO.getId(),
+                applicantProfileDTO.getFirstName(), applicantProfileDTO.getLastName(), applicantProfileDTO.getEmail(),
+                applicantProfileDTO.getAddress(), applicantProfileDTO.getCity(), applicantProfileDTO.getRegion(),
+                applicantProfileDTO.getSchool(), applicantProfileDTO.getPhoneNumber(), applicantProfileDTO.getFileName());
     }
 
     public String saveFile(MultipartFile file, String uploadPath) throws IOException {
-        String resultFilename = null;
-        if (file != null && !file.getOriginalFilename().isEmpty()) {
-            File uploadDir = new File(uploadPath);
-
-            if (!uploadDir.exists()) {
-                uploadDir.mkdir();
-            }
-
-            String uuidFile = UUID.randomUUID().toString();
-            resultFilename = uuidFile + "." + file.getOriginalFilename();
-
-            file.transferTo(new File(uploadPath + "/" + resultFilename));
+        if (Objects.isNull(file) || Objects.isNull(file.getOriginalFilename()) || file.getOriginalFilename().isEmpty()) {
+            return null;
         }
+
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdir();
+        }
+
+        String uuidFile = UUID.randomUUID().toString();
+        String resultFilename = uuidFile.substring(0, 6) + DOT + file.getOriginalFilename();
+
+        file.transferTo(new File(uploadPath + SLASH + resultFilename));
+
         return resultFilename;
     }
 }

@@ -26,14 +26,17 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.senin.demo.controller.ControllerAttributeConstant.*;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 public class ApplicantController {
+
     @Value("${upload.path}")
     private String uploadPath;
     private final ApplicantService applicantService;
-    private static final List<String> contentTypes = Arrays.asList("image/png", "image/jpeg", "image/gif");
+    private static final List<String> contentTypes = Arrays.asList(PNG, JPEG, GIF);
 
     @GetMapping("/api/applicant/registration")
     public String registrationRedirect() {
@@ -50,15 +53,15 @@ public class ApplicantController {
         if (errors.hasErrors() || errorsProfile.hasErrors()) {
             model.mergeAttributes(ValidationErrorUtils.getErrorsMap(errors));
             model.mergeAttributes(ValidationErrorUtils.getErrorsMap(errorsProfile));
-            model.addAttribute("applicantDTO", applicantDTO);
-            model.addAttribute("applicantProfileDTO", applicantProfileDTO);
+            model.addAttribute(APPLICANT_DTO, applicantDTO);
+            model.addAttribute(APPLICANT_PROFILE_DTO, applicantProfileDTO);
 
             return "/registration";
         }
         if (contentTypes.contains(file.getContentType())) {
             applicantProfileDTO.setFileName(applicantService.saveFile(file, uploadPath));
         } else {
-            model.addAttribute("errorMessage", "Wrong file format. Required: image/png, image/jpeg, image/gif ");
+            model.addAttribute(ERROR_MESSAGE, ERROR_FILE_FORMAT);
             return "/applicant/request_form";
         }
         applicantService.createApplicant(applicantDTO, applicantProfileDTO);
@@ -74,22 +77,22 @@ public class ApplicantController {
     @GetMapping("/api/applicant/profile")
     public String getApplicantProfile(@AuthenticationPrincipal User currentUser
             , Model model) {
-        model.addAttribute("applicant", applicantService.getByUsername(currentUser.getUsername()));
+        model.addAttribute(APPLICANT, applicantService.getByUsername(currentUser.getUsername()));
         return "/applicant/applicant_profile";
     }
 
     @GetMapping("/api/applicant/edit/{id}")
     public String getById(@PathVariable Long id, Model model) {
         Applicant applicant = applicantService.getById(id);
-        model.addAttribute("applicant", applicant);
-        model.addAttribute("uploadPath", uploadPath);
+        model.addAttribute(APPLICANT, applicant);
+        model.addAttribute(UPLOAD_PATH, uploadPath);
         return "/applicant/applicant_profile_edit";
 
     }
 
     @GetMapping("/api/applicant/update")
     public String updateApplicantForm(@AuthenticationPrincipal User currentUser, Model model) {
-        model.addAttribute("applicant", applicantService.getByUsername(currentUser.getUsername()));
+        model.addAttribute(APPLICANT, applicantService.getByUsername(currentUser.getUsername()));
         return "applicant/applicant_profile_edit";
     }
 
@@ -102,8 +105,8 @@ public class ApplicantController {
         if (errorsProfile.hasErrors()) {
             model.mergeAttributes(ValidationErrorUtils.getErrorsMap(errorsProfile));
 
-            model.addAttribute("username", currentUser.getUsername());
-            model.addAttribute("applicantProfileDTO", applicantProfileDTO);
+            model.addAttribute(USERNAME, currentUser.getUsername());
+            model.addAttribute(APPLICANT_PROFILE_DTO, applicantProfileDTO);
 
             return "applicant/applicant_profile_edit";
         }
@@ -111,7 +114,7 @@ public class ApplicantController {
             if (contentTypes.contains(file.getContentType())) {
                 applicantProfileDTO.setFileName(applicantService.saveFile(file, uploadPath));
             } else {
-                model.addAttribute("errorMessage", "Wrong file format. Required: image/png, image/jpeg, image/gif ");
+                model.addAttribute(ERROR_MESSAGE, ERROR_FILE_FORMAT + " ");
                 return "applicant/applicant_profile_edit";
             }
         }else{
@@ -126,8 +129,8 @@ public class ApplicantController {
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.ASC, size = 5) Pageable pageable,
             Model model) {
         Page<Applicant> page = applicantService.getAllApplicant(pageable);
-        model.addAttribute("page", page);
-        model.addAttribute("url", "/admin/applicant");
+        model.addAttribute(PAGE, page);
+        model.addAttribute(URL, "/admin/applicant");
 
         return "/admin/applicant";
     }
@@ -135,7 +138,7 @@ public class ApplicantController {
     @GetMapping("/admin/applicant/edit/{id}")
     public String getApplicantById(@PathVariable Long id, Model model) {
 
-        model.addAttribute("applicant", applicantService.getById(id));
+        model.addAttribute(APPLICANT, applicantService.getById(id));
         return "/admin/applicant-edit";
 
     }
