@@ -24,4 +24,6 @@ public interface ControllerAttributeConstant {
     String BAD_CREDENTIALS = "badCredentials";
     String DISABLED = "disabled";
     String SUCCESS = "success";
+    String REQUEST = "request";
+    String ADMISSION_REQUEST_STATUS = "admissionRequestStatus";
 }

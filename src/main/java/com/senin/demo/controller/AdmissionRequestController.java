@@ -87,7 +87,7 @@ public class AdmissionRequestController{
     }
 
     @GetMapping("/admin/requests_of_faculty/{id}")
-    public String getRequestsForFacultyById(@PageableDefault(sort = {"admissionRequestStatus"}, direction = Sort.Direction.ASC, size = 5) Pageable pageable,
+    public String getRequestsForFacultyById(@PageableDefault(sort = {ADMISSION_REQUEST_STATUS}, direction = Sort.Direction.ASC, size = 5) Pageable pageable,
                                             @PathVariable(name = "id") Long id, Model model) {
         Page<AdmissionRequest> page = admissionRequestService.getAdmissionRequestsForFacultyWithId(id, pageable);
 
@@ -99,7 +99,7 @@ public class AdmissionRequestController{
 
     @GetMapping("/admin/requests_of_faculty/request/{id}")
     public String getRequestById(@PathVariable(name = ID) Long id, Model model) {
-        model.addAttribute("request", admissionRequestService.getById(id));
+        model.addAttribute(REQUEST, admissionRequestService.getById(id));
         return "/admin/request";
     }
 

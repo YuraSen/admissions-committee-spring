@@ -15,6 +15,9 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Builder
 public class AdmissionRequestDTO {
+    private static final String RANGE_MARK = "assessment should be from [1 : 12]";
+    private static final String NOT_EMPTY = "can not be empty";
+
     private Long id;
 
     private Long applicantId;
@@ -25,16 +28,16 @@ public class AdmissionRequestDTO {
 
     private Faculty faculty;
 
-    @NotNull(message = "can not be empty")
-    @Range(min = 1, max = 12, message = "assessment should be from [1 : 12]")
+    @NotNull(message = NOT_EMPTY)
+    @Range(min = 1, max = 12, message = RANGE_MARK)
     private Integer requiredSubject1Grade;
 
-    @NotNull(message = "can not be empty")
-    @Range(min = 1, max = 12, message = "assessment should be from [1 : 12]")
+    @NotNull(message = NOT_EMPTY)
+    @Range(min = 1, max = 12, message = RANGE_MARK)
     private Integer requiredSubject2Grade;
 
-    @NotNull(message = "can not be empty")
-    @Range(min = 1, max = 12, message = "assessment should be from [1 : 12]")
+    @NotNull(message = NOT_EMPTY)
+    @Range(min = 1, max = 12, message = RANGE_MARK)
     private Integer requiredSubject3Grade;
 
     private AdmissionRequestStatus admissionRequestStatus;
